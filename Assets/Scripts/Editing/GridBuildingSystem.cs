@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
@@ -18,10 +19,12 @@ public class GridBuildingSystem : MonoBehaviour
 
     public static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
 
-    private Building temp;
+    public Building temp;
     private Vector3 prevPos;
 
     private BoundsInt prevArea;
+
+    public bool isMoving = false;
 
     #region Unity Methods
 
@@ -32,7 +35,6 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void Start()
     {
-        string tilePath = @"Tiles\Indication\";
         tileBases.Add(TileType.Empty, null);
         tileBases.Add(TileType.White, whiteTile);
         tileBases.Add(TileType.Green, greenTile);
@@ -41,42 +43,76 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void Update()
     {
-        if (!temp)
-        {
-            return;
-        }
-
+        // расстановка
         if (Input.GetMouseButtonDown(0))
+        {
+            if (temp != null)
+            {
+                if (!isMoving)
+                {
+                    isMoving = true;
+                }
+                else
+                {
+                    if (temp.CanBePlaced())
+                    {
+                        isMoving = false;
+                        temp.Place();
+                        temp = null;
+                    }
+                }
+            }
+            else
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+                if (hit.collider != null)
+                {
+                    //Debug.Log("CLICKED " + hit.collider.name);
+                    ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+                    temp = hit.collider.gameObject.GetComponent<Building>();
+                    isMoving = true;
+                    FollowBuilding();
+                }
+            }
+            
+        }
+        
+
+        if (isMoving)
         {
             if (EventSystem.current.IsPointerOverGameObject(0))
                 return;
 
-            if (!temp.Placed)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                Vector2 touchPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3Int cellPos = gridLayout.LocalToCell(touchPos);
-
-                if (prevPos != (Vector3)cellPos)
-                {
-                    temp.transform.localPosition = gridLayout.CellToLocalInterpolated((Vector3)cellPos + new Vector3(0.5f, 0.5f, 0f));
-                    prevPos = (Vector3)cellPos;
-                    FollowBuilding();
-                }
-
+                ClearArea();
+                Destroy(temp.gameObject);
+                isMoving = false;
+                temp = null;
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (temp.CanBePlaced())
+            else if (Input.GetKeyDown(KeyCode.R))
             {
-                temp.Place();
+                ClearArea();
+                prevArea = temp.area;
+                temp.TurnSide();
+                FollowBuilding();
             }
+
+            Vector2 touchPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3Int cellPos = gridLayout.LocalToCell(touchPos);
+
+            if (prevPos != (Vector3)cellPos)
+            {
+                temp.transform.localPosition = gridLayout.CellToLocalInterpolated((Vector3)cellPos + new Vector3(0.5f, 0.5f, 0f));
+                prevPos = (Vector3)cellPos;
+                FollowBuilding();
+            }
+
         }
-        else if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClearArea();
-            Destroy(temp.gameObject);
-        }
+
+        
     }
 
     #endregion
@@ -139,7 +175,8 @@ public class GridBuildingSystem : MonoBehaviour
 
     public void InitializeWithBuilding(GameObject building)
     {
-        temp = Instantiate(building, Vector3.zero, Quaternion.identity).GetComponent<Building>();
+        temp = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity).GetComponent<Building>();
+        isMoving = true;
         FollowBuilding();
     }
 
@@ -177,6 +214,25 @@ public class GridBuildingSystem : MonoBehaviour
 
         TempTilemap.SetTilesBlock(buildingArea, tileArray);
         prevArea = buildingArea;
+    }
+
+    private void ClearPrev(Building prevTemp)
+    {
+        ClearArea();
+
+        prevTemp.area.position = gridLayout.WorldToCell(prevTemp.gameObject.transform.position);
+        BoundsInt buildingArea = prevTemp.area;
+
+        TileBase[] baseArray = GetTilesBlock(buildingArea, MainTilemap);
+
+        int size = baseArray.Length;
+
+        for (int i = 0; i < baseArray.Length; i++)
+        {
+            baseArray[i] = tileBases[TileType.White];
+        }
+
+        MainTilemap.SetTilesBlock(buildingArea, baseArray);
     }
 
     #endregion

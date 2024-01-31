@@ -44,3 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Decore
+    uniqueID: 1106911729
+    locked: 0
