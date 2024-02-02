@@ -5,6 +5,8 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     [SerializeField] private List<FurnitureScriptbleObject> ExteriorFurnitures;
+    [SerializeField] private List<FurnitureScriptbleObject> Decor;
+
     [SerializeField] private InventoryCell _inventoryCellTemplate;
     [SerializeField] private Transform _container;
     [SerializeField] private Transform _draggingParent;
@@ -38,6 +40,11 @@ public class Inventory : MonoBehaviour
     public void RenderExterior()
     {
         Render(ExteriorFurnitures);
+    }
+
+    public void RenderDecor()
+    {
+        Render(Decor);
     }
 }
 

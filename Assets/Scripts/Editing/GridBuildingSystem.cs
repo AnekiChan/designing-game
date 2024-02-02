@@ -7,7 +7,9 @@ using UnityEngine.Tilemaps;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public static GridBuildingSystem current;
+    public GameObject EditPanel;
+
+    public GridBuildingSystem current;
 
     public GridLayout gridLayout;
     public Tilemap MainTilemap;
@@ -17,7 +19,7 @@ public class GridBuildingSystem : MonoBehaviour
     [SerializeField] private Tile greenTile;
     [SerializeField] private Tile redTile;
 
-    public static Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
+    public Dictionary<TileType, TileBase> tileBases = new Dictionary<TileType, TileBase>();
 
     public Building temp;
     private Vector3 prevPos;
@@ -54,11 +56,12 @@ public class GridBuildingSystem : MonoBehaviour
                 }
                 else
                 {
-                    if (temp.CanBePlaced())
+                    if (temp.CanBePlaced(current))
                     {
                         isMoving = false;
-                        temp.Place();
+                        temp.Place(current);
                         temp = null;
+                        EditPanel.SetActive(true);
                     }
                 }
             }
@@ -72,6 +75,7 @@ public class GridBuildingSystem : MonoBehaviour
                     //Debug.Log("CLICKED " + hit.collider.name);
                     ClearPrev(hit.collider.gameObject.GetComponent<Building>());
                     temp = hit.collider.gameObject.GetComponent<Building>();
+                    EditPanel.SetActive(false);
                     isMoving = true;
                     FollowBuilding();
                 }
@@ -119,7 +123,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     #region Tilemap Management
 
-    private static TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
+    private TileBase[] GetTilesBlock(BoundsInt area, Tilemap tilemap)
     {
         TileBase[] array = new TileBase[area.size.x * area.size.y * area.size.z];
         int counter = 0;
@@ -133,7 +137,7 @@ public class GridBuildingSystem : MonoBehaviour
         return array;
     }
 
-    private static void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
+    private void SetTilesBlock(BoundsInt area, TileType type, Tilemap tilemap)
     {
         int size = area.size.x * area.size.y * area.size.z;
         TileBase[] tileArray = new TileBase[size];
@@ -141,7 +145,7 @@ public class GridBuildingSystem : MonoBehaviour
         tilemap.SetTilesBlock(area, tileArray);
     }
 
-    private static void FillTiles(TileBase[] array, TileType type)
+    private void FillTiles(TileBase[] array, TileType type)
     {
         for (int i = 0; i < array.Length; i++)
         {
@@ -178,6 +182,7 @@ public class GridBuildingSystem : MonoBehaviour
         temp = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity).GetComponent<Building>();
         isMoving = true;
         FollowBuilding();
+        EditPanel.SetActive(false);
     }
 
     private void ClearArea()
@@ -233,6 +238,11 @@ public class GridBuildingSystem : MonoBehaviour
         }
 
         MainTilemap.SetTilesBlock(buildingArea, baseArray);
+    }
+
+    public void ClearCurrentTemp()
+    {
+        temp = null;
     }
 
     #endregion

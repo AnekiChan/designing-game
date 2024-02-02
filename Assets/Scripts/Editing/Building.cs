@@ -45,13 +45,13 @@ public class Building : MonoBehaviour
 
     #region Build Methods
 
-    public bool CanBePlaced()
+    public bool CanBePlaced(GridBuildingSystem grid)
     {
-        Vector3Int positionInt = GridBuildingSystem.current.gridLayout.LocalToCell(transform.position);
+        Vector3Int positionInt = grid.current.gridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = area;
         areaTemp.position = positionInt;
 
-        if (GridBuildingSystem.current.CanTakeArea(areaTemp))
+        if (grid.current.CanTakeArea(areaTemp))
         {
             return true;
         }
@@ -59,13 +59,13 @@ public class Building : MonoBehaviour
         return false;
     }
 
-    public void Place()
+    public void Place(GridBuildingSystem grid)
     {
-        Vector3Int positionInt = GridBuildingSystem.current.gridLayout.LocalToCell(transform.position);
+        Vector3Int positionInt = grid.current.gridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = area;
         areaTemp.position = positionInt;
         Placed = true;
-        GridBuildingSystem.current.TakeArea(areaTemp);
+        grid.current.TakeArea(areaTemp);
     }
 
     #endregion

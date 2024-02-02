@@ -158,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   area:
     m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 1, y: 1, z: 0}
+    m_Size: {x: 1, y: 1, z: 1}
   sprites:
   - {fileID: 1611058430918148050}
   colliders:
