@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 59756215}
   - component: {fileID: 59756217}
   - component: {fileID: 59756216}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TempTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a638fe2a64caf34bad38e73c9d95a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Environmentgrid: {fileID: 1104228009}
+  EnvironmentGrid: {fileID: 1104228009}
   DecoreGrid: {fileID: 270207161}
 --- !u!1 &270207161
 GameObject:
@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 270207164}
   - component: {fileID: 270207163}
   - component: {fileID: 270207162}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DecoreGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -580,6 +580,8 @@ MonoBehaviour:
   greenTile: {fileID: 11400000, guid: 36b713ac66724c44c891628c3a19884d, type: 2}
   redTile: {fileID: 11400000, guid: 456333aefa9a080498669593caf04703, type: 2}
   temp: {fileID: 0}
+  Parent: {fileID: 1048636562}
+  LayerNumber: 7
   isMoving: 0
 --- !u!156049354 &270207163
 Grid:
@@ -600,15 +602,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 270207161}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1383431363}
   - {fileID: 1627240050}
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_Father: {fileID: 1048636562}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &393271565
 GameObject:
@@ -1221,6 +1223,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 944575790}
   m_CullTransparentMesh: 1
+--- !u!1 &1048636561
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1048636562}
+  m_Layer: 7
+  m_Name: Decore
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1048636562
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1048636561}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 270207164}
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1057937737
 GameObject:
   m_ObjectHideFlags: 0
@@ -1269,8 +1303,8 @@ GameObject:
   - component: {fileID: 1104228011}
   - component: {fileID: 1104228010}
   - component: {fileID: 1104228012}
-  m_Layer: 0
-  m_Name: EnvironmrntGrid
+  m_Layer: 6
+  m_Name: EnvironmentGrid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1295,15 +1329,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104228009}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1763028833}
   - {fileID: 59756215}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 1200854277}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1104228012
 MonoBehaviour:
@@ -1326,7 +1360,41 @@ MonoBehaviour:
   greenTile: {fileID: 11400000, guid: 9e895d24b052f59438bf6e834eda7c29, type: 2}
   redTile: {fileID: 11400000, guid: 41cc6697b43a0724ea2669f156521d36, type: 2}
   temp: {fileID: 0}
+  Parent: {fileID: 1200854277}
+  LayerNumber: 6
   isMoving: 0
+--- !u!1 &1200854276
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1200854277}
+  m_Layer: 6
+  m_Name: Environment
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1200854277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200854276}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1104228011}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1324689582
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1508,7 @@ GameObject:
   - component: {fileID: 1383431363}
   - component: {fileID: 1383431361}
   - component: {fileID: 1383431362}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: MainTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3691,7 +3759,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1627240047
 GameObject:
@@ -3704,7 +3772,7 @@ GameObject:
   - component: {fileID: 1627240050}
   - component: {fileID: 1627240048}
   - component: {fileID: 1627240049}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TempTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3843,7 +3911,7 @@ Transform:
   m_Children:
   - {fileID: 1536629988}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1704595666
 GameObject:
@@ -3990,7 +4058,7 @@ GameObject:
   - component: {fileID: 1763028833}
   - component: {fileID: 1763028835}
   - component: {fileID: 1763028834}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MainTilemap
   m_TagString: Untagged
   m_Icon: {fileID: 0}

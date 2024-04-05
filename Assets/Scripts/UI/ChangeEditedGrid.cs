@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class ChangeEditedGrid : MonoBehaviour
 {
-    public GameObject Environmentgrid;
+    public GameObject EnvironmentGrid;
     public GameObject DecoreGrid;
 
     public void ChangeToEnvironmentGrid()
     {
+        GetComponent<Inventory>().currentGrid = EnvironmentGrid.GetComponent<GridBuildingSystem>();
         DecoreGrid.SetActive(false);
-        Environmentgrid.SetActive(true);
+        EnvironmentGrid.SetActive(true);
     }
 
     public void ChangeToDecoretGrid()
     {
-        Environmentgrid.SetActive(false);
+		GetComponent<Inventory>().currentGrid = DecoreGrid.GetComponent<GridBuildingSystem>();
+		EnvironmentGrid.SetActive(false);
         DecoreGrid.SetActive(true);
     }
 }

@@ -23,6 +23,8 @@ public class GridBuildingSystem : MonoBehaviour
 
     public Building temp;
     private Vector3 prevPos;
+    public Transform Parent;
+    public int LayerNumber;
 
     private BoundsInt prevArea;
 
@@ -33,7 +35,7 @@ public class GridBuildingSystem : MonoBehaviour
     private void Awake()
     {
         current = this;
-    }
+	}
 
     private void Start()
     {
@@ -53,12 +55,13 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!isMoving)
                 {
                     isMoving = true;
-                }
+				}
                 else
                 {
                     if (temp.CanBePlaced(current))
                     {
                         isMoving = false;
+                        //temp.transform.SetParent(Parent);
                         temp.Place(current);
                         temp = null;
                         EditPanel.SetActive(true);
@@ -68,7 +71,8 @@ public class GridBuildingSystem : MonoBehaviour
             else
             {
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
+                int mask = 1 << LayerNumber;
+                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
 
                 if (hit.collider != null)
                 {
@@ -95,6 +99,7 @@ public class GridBuildingSystem : MonoBehaviour
                 Destroy(temp.gameObject);
                 isMoving = false;
                 temp = null;
+                EditPanel.SetActive(true);
             }
             else if (Input.GetKeyDown(KeyCode.R))
             {
@@ -179,8 +184,12 @@ public class GridBuildingSystem : MonoBehaviour
 
     public void InitializeWithBuilding(GameObject building)
     {
-        temp = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity).GetComponent<Building>();
-        isMoving = true;
+        GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, Parent);
+        obj.layer = gameObject.layer;
+        temp = obj.GetComponent<Building>();
+		//temp.transform.parent = Parent;
+
+		isMoving = true;
         FollowBuilding();
         EditPanel.SetActive(false);
     }
