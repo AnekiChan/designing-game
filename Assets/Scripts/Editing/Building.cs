@@ -13,8 +13,15 @@ public class Building : MonoBehaviour
     private int side_count;
     private int current_side = 0;
 
-    private void Start()
+    public bool iSOccupied = false;
+    public bool isSitting = false;
+    public Transform SeatPos;
+
+
+	private void Start()
     {
+        if (SeatPos == null) SeatPos = transform;
+
         if (sprites.Count == colliders.Count)
         {
             side_count = sprites.Count;

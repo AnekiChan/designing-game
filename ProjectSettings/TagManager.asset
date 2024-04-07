@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Creature
   layers:
   - Default
   - TransparentFX
@@ -46,4 +47,7 @@ TagManager:
     locked: 0
   - name: Decore
     uniqueID: 1106911729
+    locked: 0
+  - name: Creature
+    uniqueID: 1720895961
     locked: 0
