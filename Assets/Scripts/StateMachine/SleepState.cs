@@ -38,7 +38,7 @@ public class SleepState : State
         }
         else
         {
-			_closestSeat.iSOccupied = false;
+			
 			_creature.IsStateEnd = true;
         }
     }
@@ -46,8 +46,9 @@ public class SleepState : State
     public override void Exit()
     {
         base.Exit();
-        //Debug.Log("sleep exit");
-        _creature.Animator.SetBool("IsSleeping", false);
+		//Debug.Log("sleep exit");
+		if (_closestSeat != null) _closestSeat.iSOccupied = false;
+		_creature.Animator.SetBool("IsSleeping", false);
     }
 
     public override void Update()
