@@ -2,9 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Building : MonoBehaviour
 {
+    [SerializeField] public Sprite Icon;
+    public int SaveId = -1;
     public bool Placed {  get; private set; }
     public BoundsInt area;
 
@@ -73,6 +76,8 @@ public class Building : MonoBehaviour
         areaTemp.position = positionInt;
         Placed = true;
         grid.current.TakeArea(areaTemp);
+
+        SavingSystem.SaveObj(gameObject);
     }
 
     #endregion

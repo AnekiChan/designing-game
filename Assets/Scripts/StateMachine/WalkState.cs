@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class WalkState : State
 {
@@ -8,9 +9,12 @@ public class WalkState : State
     private float _speed = 0;
     private Vector3 _newPosition;
 
+    private NavMeshAgent _agent;
+
     public WalkState(Creature creature)
     {
         _creature = creature;
+        _agent = creature.GetComponent<NavMeshAgent>();
     }
 
     public override void Enter()
@@ -43,7 +47,9 @@ public class WalkState : State
         base.Update();
         //Debug.Log("walk update");
 
-        _creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _newPosition, _speed * Time.deltaTime);
+        //_creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _newPosition, _speed * Time.deltaTime);
+        _agent.SetDestination(_newPosition);
+
         if (_creature.transform.position == _newPosition)
         {
             _creature.IsStateEnd = true;

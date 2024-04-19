@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private List<FurnitureScriptbleObject> ExteriorFurnitures;
-    [SerializeField] private List<FurnitureScriptbleObject> Decor;
+    [SerializeField] private List<Furniture> ExteriorFurnitures;
+	[SerializeField] private List<Furniture> InteriorFurnitures;
+	[SerializeField] private List<Furniture> Decore;
 
     [SerializeField] private InventoryCell _inventoryCellTemplate;
     [SerializeField] private Transform _container;
@@ -15,26 +16,29 @@ public class Inventory : MonoBehaviour
 
     public void OnEnable()
     {
-        Render(ExteriorFurnitures);
+        InteriorFurnitures = Connection.GetInterior();
+        Decore = Connection.GetDecore();
+
+        Render(InteriorFurnitures);
     }
 
-    public void Render(List<FurnitureScriptbleObject> furnitures)
+    public void Render(List<Furniture> furnitures)
     {
         foreach (Transform child in _container)
         {
             Destroy(child.gameObject);
         }
-
-        furnitures.ForEach(furniture =>
+		foreach (Furniture f in furnitures) Debug.Log(f.Title);
+		foreach (Furniture furniture in furnitures)
         {
-            var cell = Instantiate(_inventoryCellTemplate, _container);
-            cell.Render(furniture, currentGrid);
-        });
+			var cell = Instantiate(_inventoryCellTemplate, _container);
+			cell.Render(furniture, currentGrid);
+		}
     }
 
     public void RenderInterior()
     {
-        //Render(InteriorFurnitures);
+        Render(InteriorFurnitures);
     }
 
     public void RenderExterior()
@@ -44,7 +48,7 @@ public class Inventory : MonoBehaviour
 
     public void RenderDecor()
     {
-        Render(Decor);
+        Render(Decore);
     }
 }
 

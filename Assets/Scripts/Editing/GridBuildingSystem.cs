@@ -43,6 +43,8 @@ public class GridBuildingSystem : MonoBehaviour
         tileBases.Add(TileType.White, whiteTile);
         tileBases.Add(TileType.Green, greenTile);
         tileBases.Add(TileType.Red, redTile);
+
+        MainTilemap.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -55,6 +57,7 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!isMoving)
                 {
                     isMoving = true;
+					MainTilemap.gameObject.SetActive(true);
 				}
                 else
                 {
@@ -65,7 +68,8 @@ public class GridBuildingSystem : MonoBehaviour
                         temp.Place(current);
                         temp = null;
                         EditPanel.SetActive(true);
-                    }
+						MainTilemap.gameObject.SetActive(false);
+					}
                 }
             }
             else
@@ -82,7 +86,8 @@ public class GridBuildingSystem : MonoBehaviour
                     EditPanel.SetActive(false);
                     isMoving = true;
                     FollowBuilding();
-                }
+					MainTilemap.gameObject.SetActive(true);
+				}
             }
             
         }
@@ -96,6 +101,7 @@ public class GridBuildingSystem : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 ClearArea();
+                // delete sql
                 Destroy(temp.gameObject);
                 isMoving = false;
                 temp = null;
