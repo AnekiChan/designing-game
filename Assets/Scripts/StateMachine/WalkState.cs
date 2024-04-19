@@ -15,7 +15,10 @@ public class WalkState : State
     {
         _creature = creature;
         _agent = creature.GetComponent<NavMeshAgent>();
-    }
+        _agent.isStopped = false;
+		//_agent.updateRotation = false;
+		//_agent.updateUpAxis = false;
+	}
 
     public override void Enter()
     {
@@ -23,7 +26,8 @@ public class WalkState : State
         Debug.Log("walk enter");
         _speed = _creature.speed;
         _creature.Animator.SetFloat("Speed", _speed);
-        _newPosition = new Vector2(_creature.transform.position.x + Random.Range(-7f, 7f), _creature.transform.position.y + Random.Range(-7f, 7f));
+        _newPosition = new Vector2(_creature.transform.position.x + Random.Range(-4f, 4f), _creature.transform.position.y + Random.Range(-4f, 4f));
+        Debug.Log(_newPosition);
         
         Collider2D[] colliders = Physics2D.OverlapCircleAll(_newPosition, 0.001f);  // если точка находитс€ в стене, то отмен€ем действие
         foreach (Collider2D collider in colliders)
@@ -50,9 +54,11 @@ public class WalkState : State
         //_creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _newPosition, _speed * Time.deltaTime);
         _agent.SetDestination(_newPosition);
 
-        if (_creature.transform.position == _newPosition)
+        if (Vector2.Distance(_creature.transform.position, _newPosition) < 0.001f)
         {
-            _creature.IsStateEnd = true;
+			_agent.isStopped = true;
+			_creature.IsStateEnd = true;
+            
         }
     }
 

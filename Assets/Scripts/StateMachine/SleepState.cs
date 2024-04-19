@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class SleepState : State
 {
@@ -9,11 +10,14 @@ public class SleepState : State
     private float _timer;
     private Building _closestSeat;
     private float _speed;
+	private NavMeshAgent _agent;
 
-    public SleepState(Creature creature)
+	public SleepState(Creature creature)
     {
         _creature = creature;
-    }
+		_agent = creature.GetComponent<NavMeshAgent>();
+		_agent.isStopped = false;
+	}
     public override void Enter()
     {
         base.Enter();
@@ -26,14 +30,18 @@ public class SleepState : State
         if (_closestSeat != null)
         {
             if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) > 0.01f)
+            {
                 _creature.Animator.SetFloat("Speed", _speed);
+                _agent.isStopped = false;
+            }
+
 
             else
             {
                 _closestSeat.iSOccupied = true;
                 _creature.Animator.SetBool("IsSleeping", true);
             }
-
+            _closestSeat.gameObject.GetComponent<NavMeshObstacle>().enabled = false;
             _timer = Random.Range(10, 20);
         }
         else
@@ -49,13 +57,14 @@ public class SleepState : State
 		//Debug.Log("sleep exit");
 		if (_closestSeat != null) _closestSeat.iSOccupied = false;
 		_creature.Animator.SetBool("IsSleeping", false);
-    }
+		_closestSeat.gameObject.GetComponent<NavMeshObstacle>().enabled = true;
+	}
 
     public override void Update()
     {
         if (_closestSeat != null)
         {
-            if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) > 0.01f)
+            if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) > 0.001f)
             {
                 MoveToSeat();
             }
@@ -89,12 +98,14 @@ public class SleepState : State
 
     private void MoveToSeat()
     {
-        _creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _closestSeat.SeatPos.position, _speed * Time.deltaTime);
-        if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) <= 0.01f)
+        //_creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _closestSeat.SeatPos.position, _speed * Time.deltaTime);
+        _agent.SetDestination(_closestSeat.SeatPos.position);
+        if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) < 0.01f)
         {
             _creature.Animator.SetFloat("Speed", 0);
             _creature.Animator.SetBool("IsSleeping", true);
             _closestSeat.iSOccupied = true;
+            _agent.isStopped = true;
         }
     }
 
@@ -107,7 +118,8 @@ public class SleepState : State
         else
         {
             _closestSeat.iSOccupied = false;
-            _creature.IsStateEnd = true;
+			_agent.isStopped = true;
+			_creature.IsStateEnd = true;
         }
     }
 }
