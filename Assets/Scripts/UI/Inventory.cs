@@ -1,25 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
-    [SerializeField] private List<Furniture> ExteriorFurnitures;
-	[SerializeField] private List<Furniture> InteriorFurnitures;
-	[SerializeField] private List<Furniture> Decore;
-
     [SerializeField] private InventoryCell _inventoryCellTemplate;
     [SerializeField] private Transform _container;
     [SerializeField] private Transform _draggingParent;
 
-    public GridBuildingSystem currentGrid;
+    [SerializeField] private List<Sprite> _images;
+    [SerializeField] private GameObject _CurrentExteriorPanel;
+    [SerializeField] private GameObject _CurrentInteriorPanel;
+
+    [SerializeField] private GameObject _exteriorPanel;
+	[SerializeField] private GameObject _interiorPanel;
+
+	public GridBuildingSystem currentGrid;
 
     public void OnEnable()
     {
-        InteriorFurnitures = Connection.GetInterior();
-        Decore = Connection.GetDecore();
-
-        Render(InteriorFurnitures);
+        SetExteriorPanel();
+        Render(Connection.GetPlants());
     }
 
     public void Render(List<Furniture> furnitures)
@@ -36,20 +38,63 @@ public class Inventory : MonoBehaviour
 		}
     }
 
-    public void RenderInterior()
+    public void RenderPlants()
     {
-        Render(InteriorFurnitures);
+        Render(Connection.GetPlants());
+        _CurrentExteriorPanel.GetComponent<Image>().sprite = _images[0];
     }
 
-    public void RenderExterior()
+    public void RenderOutdoors()
     {
-        Render(ExteriorFurnitures);
+        Render(Connection.GetOutdors());
+		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[1];
+	}
+
+    public void RenderBigFurniture()
+    {
+        Render(Connection.GetBigFurniture());
+		_CurrentInteriorPanel.GetComponent<Image>().sprite = _images[0];
+	}
+
+	public void RenderSmallFurniture()
+	{
+		Render(Connection.GetSmallFurniture());
+		_CurrentInteriorPanel.GetComponent<Image>().sprite = _images[1];
+	}
+
+	public void RenderDecore()
+	{
+		Render(Connection.GetDecore());
+		_CurrentInteriorPanel.GetComponent<Image>().sprite = _images[2];
+	}
+
+	public void RenderWall()
+	{
+		Render(Connection.GetWall());
+		_CurrentInteriorPanel.GetComponent<Image>().sprite = _images[3];
+	}
+
+	public void RenderCarpet()
+	{
+		Render(Connection.GetCarpet());
+		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[4];
+	}
+
+    public void SetExteriorPanel()
+    {
+        _exteriorPanel.SetActive(true);
+        _interiorPanel.SetActive(false);
+
+        RenderPlants();
     }
 
-    public void RenderDecor()
-    {
-        Render(Decore);
-    }
+	public void SetInteriorPanel()
+	{
+		_exteriorPanel.SetActive(false);
+		_interiorPanel.SetActive(true);
+
+        RenderBigFurniture();
+	}
 }
 
 public enum GridType

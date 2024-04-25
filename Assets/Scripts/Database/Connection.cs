@@ -78,11 +78,15 @@ public static class Connection
 		}
 	}
 
-    public static List<Furniture> GetExterior() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='exterior')");
-	public static List<Furniture> GetInterior() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='interior')");
+    public static List<Furniture> GetPlants() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='plants')");
+	public static List<Furniture> GetOutdors() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='outdoors')");
+	public static List<Furniture> GetBigFurniture() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='bigfurniture')");
+	public static List<Furniture> GetSmallFurniture() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='smallfurniture')");
 	public static List<Furniture> GetDecore() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='decore')");
+	public static List<Furniture> GetWall() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='wall')");
+	public static List<Furniture> GetCarpet() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='carpet')");
 
-    public static void SaveFurniture(int saveId, string pref, float x, float y)
+	public static void SaveFurniture(int saveId, string pref, float x, float y)
     {
 		DbConnection.Open();
 		if (DbConnection.State == ConnectionState.Open)
