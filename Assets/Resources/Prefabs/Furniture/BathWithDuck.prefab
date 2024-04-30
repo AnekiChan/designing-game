@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6191673561039875487}
   - component: {fileID: 6637563937237663466}
   m_Layer: 0
-  m_Name: BedSprite1
+  m_Name: Sprite1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 461007967
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1072551943, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
+  m_Sprite: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,7 +98,7 @@ GameObject:
   - component: {fileID: 6618914850523819429}
   - component: {fileID: 7836987149067138369}
   m_Layer: 0
-  m_Name: BedPref
+  m_Name: BathWithDuck
   m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c00794e7085a249bcbc014c7a10cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: -1934580929, guid: 8655b8c5901421b48aa4011a3cc6ad9c, type: 3}
+  Icon: {fileID: 983413814, guid: 8655b8c5901421b48aa4011a3cc6ad9c, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 2, y: 1, z: 1}
@@ -280,7 +280,7 @@ GameObject:
   - component: {fileID: 1398666353151265232}
   - component: {fileID: 4711718092281674953}
   m_Layer: 0
-  m_Name: BedSprite2
+  m_Name: Sprite2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -342,7 +342,7 @@ SpriteRenderer:
   m_SortingLayerID: 461007967
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1072551943, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
+  m_Sprite: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
   m_FlipY: 0

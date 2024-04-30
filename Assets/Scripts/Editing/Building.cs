@@ -7,21 +7,20 @@ using UnityEngine.UI;
 public class Building : MonoBehaviour
 {
     [SerializeField] public Sprite Icon;
-    public int SaveId = -1;
     public bool Placed {  get; private set; }
     public BoundsInt area;
 
     public List<GameObject> sprites = new List<GameObject>();
     public List <Collider2D> colliders = new List<Collider2D>();
     private int side_count;
-    private int current_side = 0;
+    public int Current_side { get; private set; } = 0;
 
     public bool iSOccupied = false;
     public bool isSitting = false;
     public Transform SeatPos;
 
 
-	private void Start()
+	private void Awake()
     {
         if (SeatPos == null) SeatPos = transform;
 
@@ -41,11 +40,11 @@ public class Building : MonoBehaviour
 
     public void TurnSide()
     {
-        sprites[current_side].SetActive(false);
-        colliders[current_side].enabled = false;
-        current_side = (current_side + 1) % side_count;
-        sprites[current_side].SetActive(true);
-        colliders[current_side].enabled = true;
+        sprites[Current_side].SetActive(false);
+        colliders[Current_side].enabled = false;
+        Current_side = (Current_side + 1) % side_count;
+        sprites[Current_side].SetActive(true);
+        colliders[Current_side].enabled = true;
 
         int x = area.size.x;
         int y = area.size.y;
@@ -53,9 +52,27 @@ public class Building : MonoBehaviour
         area.size = new Vector3Int(y, x, 1);
     }
 
-    #region Build Methods
+	public void TurnSide(int side)
+	{
+		while (Current_side != side)
+        {
+            
+			sprites[Current_side].SetActive(false);
+			colliders[Current_side].enabled = false;
+			Current_side = (Current_side + 1) % side_count;
+			sprites[Current_side].SetActive(true);
+			colliders[Current_side].enabled = true;
 
-    public bool CanBePlaced(GridBuildingSystem grid)
+			int x = area.size.x;
+			int y = area.size.y;
+
+			area.size = new Vector3Int(y, x, 1);
+		}
+	}
+
+	#region Build Methods
+
+	public bool CanBePlaced(GridBuildingSystem grid)
     {
         Vector3Int positionInt = grid.current.gridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = area;
@@ -76,8 +93,6 @@ public class Building : MonoBehaviour
         areaTemp.position = positionInt;
         Placed = true;
         grid.current.TakeArea(areaTemp);
-
-        SavingSystem.SaveObj(gameObject);
     }
 
     #endregion

@@ -23,4 +23,11 @@ public class GridSystem: MonoBehaviour
 		else if (interiorIds.Contains(furniture.Type)) return Interior.GetComponent<GridBuildingSystem>();
 		else return Decore.GetComponent<GridBuildingSystem>();
 	}
+
+	public int GetFurnitureLayer(int id)
+	{
+		if (exteriorIds.Contains(id)) return Exterior.layer;
+		else if (interiorIds.Contains(id)) return Interior.layer;
+		else return Decore.layer;
+	}
 }

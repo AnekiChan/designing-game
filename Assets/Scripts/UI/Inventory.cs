@@ -91,7 +91,7 @@ public class Inventory : MonoBehaviour
 	public void RenderCarpet()
 	{
 		Render(Connection.GetCarpet());
-		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[4];
+		_CurrentInteriorPanel.GetComponent<Image>().sprite = _images[4];
 	}
 
     public void SetExteriorPanel()

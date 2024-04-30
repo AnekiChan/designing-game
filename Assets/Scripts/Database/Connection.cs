@@ -86,8 +86,8 @@ public static class Connection
 	public static List<Furniture> GetWall() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='wall')");
 	public static List<Furniture> GetCarpet() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='carpet')");
 
-	public static void SaveFurniture(int saveId, string pref, float x, float y)
-    {
+	public static void Save(string pref, float x, float y, int side)
+	{
 		DbConnection.Open();
 		if (DbConnection.State == ConnectionState.Open)
 		{
@@ -96,8 +96,8 @@ public static class Connection
 			{
 				SqliteCommand cmd = new SqliteCommand();
 				cmd.Connection = DbConnection;
-				//Debug.Log($"INSERT INTO objects_save VALUES ((SELECT id FROM furniture WHERE prefab='{pref}'),{x},{y})");
-				cmd.CommandText = $"REPLACE INTO objects_save (id, object_id, x_pos, y_pos) VALUES ({saveId},(SELECT id FROM furniture WHERE prefab='{pref}'),@x,@y)";
+
+				cmd.CommandText = $"INSERT INTO objects_save (object_id, x_pos, y_pos, side) VALUES ((SELECT id FROM furniture WHERE prefab='{pref}'),@x,@y,{side})";
 				SqliteParameter xPar = new SqliteParameter("@x", x);
 				cmd.Parameters.Add(xPar);
 				SqliteParameter yPar = new SqliteParameter("@y", y);
@@ -109,6 +109,31 @@ public static class Connection
 				Debug.LogException(e);
 			}
 
+		}
+		else
+		{
+			Debug.Log("Error connection");
+		}
+		DbConnection.Close();
+	}
+
+	public static void ClearFurnitureTable()
+	{
+		DbConnection.Open();
+		if (DbConnection.State == ConnectionState.Open)
+		{
+			try
+			{
+				SqliteCommand cmd = new SqliteCommand();
+				cmd.Connection = DbConnection;
+				// отчиска таблицы для перезаписи
+				cmd.CommandText = "DELETE FROM objects_save";
+				cmd.ExecuteNonQuery();
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+			}
 		}
 		else
 		{
@@ -132,7 +157,7 @@ public static class Connection
 				SqliteDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
-					saveObjects.Add(new SaveObj(Int32.Parse(reader[0].ToString()), Int32.Parse(reader[1].ToString()), float.Parse(reader[2].ToString()), float.Parse(reader[3].ToString())));
+					saveObjects.Add(new SaveObj(Int32.Parse(reader[0].ToString()), float.Parse(reader[1].ToString()), float.Parse(reader[2].ToString()), Int32.Parse(reader[3].ToString())));
 				}
 				DbConnection.Close();
 				return saveObjects;
@@ -188,7 +213,7 @@ public static class Connection
 		}
 	}
 
-	public static string GetType(int id)
+	public static int GetType(int objId)
 	{
 		DbConnection.Open();
 		if (DbConnection.State == ConnectionState.Open)
@@ -198,20 +223,20 @@ public static class Connection
 				string typeTitle = "";
 				SqliteCommand cmd = new SqliteCommand();
 				cmd.Connection = DbConnection;
-				cmd.CommandText = $"SELECT type FROM types WHERE id={id}";
+				cmd.CommandText = $"SELECT type FROM furniture WHERE id={objId}";
 				SqliteDataReader reader = cmd.ExecuteReader();
 				while (reader.Read())
 				{
 					typeTitle = reader[0].ToString();
 				}
 				DbConnection.Close();
-				return typeTitle;
+				return Int32.Parse(typeTitle);
 			}
 			catch (Exception e)
 			{
 				Debug.LogException(e);
 				DbConnection.Close();
-				return "";
+				return 0;
 			}
 
 		}
@@ -219,7 +244,7 @@ public static class Connection
 		{
 			Debug.Log("Error connection");
 			DbConnection.Close();
-			return "";
+			return 0;
 		}
 	}
 

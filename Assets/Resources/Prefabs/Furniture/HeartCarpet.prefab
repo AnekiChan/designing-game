@@ -41,10 +41,9 @@ GameObject:
   m_Component:
   - component: {fileID: 3946050769813079279}
   - component: {fileID: 8212125674224069599}
-  - component: {fileID: 5842282885392197989}
-  - component: {fileID: 676434819960985421}
+  - component: {fileID: 2609583711253746918}
   m_Layer: 0
-  m_Name: ChairPref
+  m_Name: HeartCarpet
   m_TagString: Furniture
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,19 +78,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c00794e7085a249bcbc014c7a10cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: -139970694, guid: 8655b8c5901421b48aa4011a3cc6ad9c, type: 3}
+  Icon: {fileID: -1544225894, guid: 8655b8c5901421b48aa4011a3cc6ad9c, type: 3}
   area:
     m_Position: {x: 0, y: 0, z: 0}
     m_Size: {x: 1, y: 1, z: 1}
   sprites:
   - {fileID: 6214737753424250180}
   colliders:
-  - {fileID: 5842282885392197989}
+  - {fileID: 2609583711253746918}
   iSOccupied: 0
-  isSitting: 1
+  isSitting: 0
   SeatPos: {fileID: 6473455798055933599}
---- !u!60 &5842282885392197989
-PolygonCollider2D:
+--- !u!61 &2609583711253746918
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -119,10 +118,10 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.12}
+  m_Offset: {x: -0.016335726, y: -0.020419702}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -132,31 +131,9 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.012125079, y: 0.3186208}
-      - {x: -0.2863016, y: 0.19603866}
-      - {x: -0.30206665, y: -0.1339705}
-      - {x: -0.0061386395, y: -0.24342385}
-      - {x: 0.29941767, y: -0.115612164}
-      - {x: 0.29277223, y: 0.18192637}
-  m_UseDelaunayMesh: 0
---- !u!208 &676434819960985421
-NavMeshObstacle:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5495437257041452111}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.225, y: 0.06, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
-  m_TimeToStationary: 0.5
+  serializedVersion: 2
+  m_Size: {x: 0.5698259, y: 0.37651983}
+  m_EdgeRadius: 0
 --- !u!1 &6214737753424250180
 GameObject:
   m_ObjectHideFlags: 0
@@ -229,8 +206,8 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 461007967
   m_SortingLayer: 2
-  m_SortingOrder: 2
-  m_Sprite: {fileID: -16252408, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 577749666, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
