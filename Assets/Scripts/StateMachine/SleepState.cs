@@ -21,7 +21,7 @@ public class SleepState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("sleep enter");
+        //Debug.Log("sleep enter");
 
         _speed = _creature.speed;
 

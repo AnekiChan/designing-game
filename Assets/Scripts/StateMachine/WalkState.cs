@@ -23,7 +23,7 @@ public class WalkState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("walk enter");
+        //Debug.Log("walk enter");
         _speed = _creature.speed;
         _creature.Animator.SetFloat("Speed", _speed);
         _newPosition = new Vector2(_creature.transform.position.x + Random.Range(-4f, 4f), _creature.transform.position.y + Random.Range(-4f, 4f));
@@ -32,7 +32,7 @@ public class WalkState : State
         else
             _creature.GetComponent<SpriteRenderer>().flipX = true;
 
-		Debug.Log(_newPosition);
+		//Debug.Log(_newPosition);
         
         Collider2D[] colliders = Physics2D.OverlapCircleAll(_newPosition, 0.001f);  // если точка находитс€ в стене, то отмен€ем действие
         foreach (Collider2D collider in colliders)

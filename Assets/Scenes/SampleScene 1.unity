@@ -9891,7 +9891,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -9988,7 +9988,7 @@ Animator:
   m_GameObject: {fileID: 1093350895}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 46aac5fc4b0ff8b4a92cd4f9c7f485dc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 24c501ac2826b8a4aad7ffdd78c07404, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -10109,6 +10109,8 @@ MonoBehaviour:
   _interiorPanel: {fileID: 1156785220}
   currentGrid: {fileID: 1104228012}
   _exteriorButton: {fileID: 1093350897}
+  _exAnimator: {fileID: 1093350900}
+  _inAnimator: {fileID: 1385281553}
 --- !u!114 &1097273508
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12313,7 +12315,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -12410,7 +12412,7 @@ Animator:
   m_GameObject: {fileID: 1385281548}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 46aac5fc4b0ff8b4a92cd4f9c7f485dc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 24c501ac2826b8a4aad7ffdd78c07404, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

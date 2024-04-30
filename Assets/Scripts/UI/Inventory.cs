@@ -21,18 +21,21 @@ public class Inventory : MonoBehaviour
 	public GridBuildingSystem currentGrid;
 
     [SerializeField] private Button _exteriorButton;
+    [SerializeField] private Animator _exAnimator;
+	[SerializeField] private Animator _inAnimator;
 
 	private void Awake()
 	{
-        
+        //_exteriorButton.Select();
+        //_exAnimator.SetTrigger("Selected");
 	}
 
 	public void OnEnable()
     {
         SetExteriorPanel();
         Render(Connection.GetPlants());
-        _exteriorButton.Select();
-        _exteriorButton.interactable = true;
+        
+        //_exteriorButton.interactable = true;
 	}
 
     public void Render(List<Furniture> furnitures)
@@ -41,7 +44,7 @@ public class Inventory : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-		foreach (Furniture f in furnitures) Debug.Log(f.Title);
+		//foreach (Furniture f in furnitures) Debug.Log(f.Title);
 		foreach (Furniture furniture in furnitures)
         {
 			var cell = Instantiate(_inventoryCellTemplate, _container);
@@ -93,14 +96,22 @@ public class Inventory : MonoBehaviour
 
     public void SetExteriorPanel()
     {
+        //Debug.Log("SetExteriorPanel");
+        _inAnimator.SetBool("IsOpen", false);
+        _exAnimator.SetBool("IsOpen", true);
+
         _exteriorPanel.SetActive(true);
         _interiorPanel.SetActive(false);
 
         RenderPlants();
-    }
+	}
 
 	public void SetInteriorPanel()
 	{
+		//Debug.Log("SetInteriorPanel");
+		_inAnimator.SetBool("IsOpen", true);
+		_exAnimator.SetBool("IsOpen", false);
+
 		_exteriorPanel.SetActive(false);
 		_interiorPanel.SetActive(true);
 
