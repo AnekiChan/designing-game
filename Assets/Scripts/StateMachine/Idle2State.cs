@@ -16,7 +16,7 @@ public class Idle2State : State
     {
         base.Enter();
         Debug.Log("idle2 enter");
-        _timer = Random.Range(2, 5);
+        _timer = Random.Range(4, 7);
         _creature.Animator.SetBool("IsIdle2", true);
     }
 

@@ -79,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c00794e7085a249bcbc014c7a10cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 1195885769, guid: 8eeb85cc4af54814c838bfe7a38487b6, type: 3}
+  Icon: {fileID: -139970694, guid: 8655b8c5901421b48aa4011a3cc6ad9c, type: 3}
   SaveId: -1
   area:
     m_Position: {x: 0, y: 0, z: 0}
@@ -123,7 +123,7 @@ PolygonCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.04, y: 0.07}
+  m_Offset: {x: 0, y: 0.12}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -135,12 +135,12 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.010630637, y: 0.25585425}
-      - {x: -0.26537943, y: 0.1123499}
-      - {x: -0.24228895, y: -0.1339705}
-      - {x: -0.0016553104, y: -0.23595163}
-      - {x: 0.23963994, y: -0.14550102}
-      - {x: 0.24943335, y: 0.11766538}
+    - - {x: -0.012125079, y: 0.3186208}
+      - {x: -0.2863016, y: 0.19603866}
+      - {x: -0.30206665, y: -0.1339705}
+      - {x: -0.0061386395, y: -0.24342385}
+      - {x: 0.29941767, y: -0.115612164}
+      - {x: 0.29277223, y: 0.18192637}
   m_UseDelaunayMesh: 0
 --- !u!208 &676434819960985421
 NavMeshObstacle:
@@ -152,11 +152,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.24, y: 0.06, z: 0.5}
+  m_Extents: {x: 0.225, y: 0.06, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0.03, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
 --- !u!1 &6214737753424250180
 GameObject:
@@ -231,7 +231,7 @@ SpriteRenderer:
   m_SortingLayerID: 461007967
   m_SortingLayer: 2
   m_SortingOrder: 2
-  m_Sprite: {fileID: 1195885769, guid: 8eeb85cc4af54814c838bfe7a38487b6, type: 3}
+  m_Sprite: {fileID: -16252408, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

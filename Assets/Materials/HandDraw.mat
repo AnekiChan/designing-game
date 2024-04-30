@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: HandDraw
   m_Shader: {fileID: 4800000, guid: a36b7719ff0465b42ab1407d67672c5f, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
   - DOODLE_ON
   m_InvalidKeywords:
@@ -19,6 +21,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -134,8 +137,8 @@ Material:
     - _GreyscaleBlend: 1
     - _GreyscaleLuminosity: 0
     - _GreyscaleOutline: 0
-    - _HandDrawnAmount: 0.7
-    - _HandDrawnSpeed: 1.5
+    - _HandDrawnAmount: 1.5
+    - _HandDrawnSpeed: 2
     - _HitEffectBlend: 1
     - _HitEffectGlow: 5
     - _HologramBlend: 1
@@ -186,7 +189,7 @@ Material:
     - _OverlayBlend: 1
     - _OverlayGlow: 1
     - _PinchUvAmount: 0.35
-    - _PixelateSize: 32
+    - _PixelateSize: 231
     - _PosterizeGamma: 0.75
     - _PosterizeNumColors: 8
     - _PosterizeOutline: 0
@@ -196,8 +199,8 @@ Material:
     - _RoundWaveSpeed: 2
     - _RoundWaveStrength: 0.7
     - _ShadowAlpha: 0.5
-    - _ShadowX: 0.1
-    - _ShadowY: -0.05
+    - _ShadowX: -0.142
+    - _ShadowY: 0.386
     - _ShakeUvSpeed: 2.5
     - _ShakeUvX: 1.5
     - _ShakeUvY: 1
@@ -205,7 +208,7 @@ Material:
     - _ShineLocation: 0.5
     - _ShineRotate: 0
     - _ShineWidth: 0.1
-    - _TextureScrollXSpeed: 1
+    - _TextureScrollXSpeed: 0.08
     - _TextureScrollYSpeed: 0
     - _TwistUvAmount: 1
     - _TwistUvPosX: 0.5

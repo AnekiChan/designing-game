@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public GameObject EditPanel;
+	[SerializeField] private Inventory EditPanel;
 
     public GridBuildingSystem current;
 
@@ -44,7 +44,7 @@ public class GridBuildingSystem : MonoBehaviour
         tileBases.Add(TileType.Green, greenTile);
         tileBases.Add(TileType.Red, redTile);
 
-        MainTilemap.gameObject.SetActive(false);
+		ActiveMaintilemap(false);
     }
 
     private void Update()
@@ -57,7 +57,7 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!isMoving)
                 {
                     isMoving = true;
-					MainTilemap.gameObject.SetActive(true);
+                    ActiveMaintilemap(true);
 				}
                 else
                 {
@@ -67,8 +67,8 @@ public class GridBuildingSystem : MonoBehaviour
                         //temp.transform.SetParent(Parent);
                         temp.Place(current);
                         temp = null;
-                        EditPanel.SetActive(true);
-						MainTilemap.gameObject.SetActive(false);
+                        EditPanel.HideInvantory(false);
+						ActiveMaintilemap(false);
 					}
                 }
             }
@@ -83,10 +83,10 @@ public class GridBuildingSystem : MonoBehaviour
                     //Debug.Log("CLICKED " + hit.collider.name);
                     ClearPrev(hit.collider.gameObject.GetComponent<Building>());
                     temp = hit.collider.gameObject.GetComponent<Building>();
-                    EditPanel.SetActive(false);
-                    isMoving = true;
+                    EditPanel.HideInvantory(true);
+					isMoving = true;
                     FollowBuilding();
-					MainTilemap.gameObject.SetActive(true);
+					ActiveMaintilemap(true);
 				}
             }
             
@@ -105,9 +105,9 @@ public class GridBuildingSystem : MonoBehaviour
                 Destroy(temp.gameObject);
                 isMoving = false;
                 temp = null;
-                EditPanel.SetActive(true);
+                EditPanel.HideInvantory(false);
             }
-            else if (Input.GetKeyDown(KeyCode.R))
+            else if (Input.GetMouseButtonDown(1))
             {
                 ClearArea();
                 prevArea = temp.area;
@@ -129,6 +129,11 @@ public class GridBuildingSystem : MonoBehaviour
 
         
     }
+
+    private void ActiveMaintilemap(bool b)
+    {
+		//MainTilemap.gameObject.SetActive(b);
+	}
 
     #endregion
 
@@ -197,7 +202,7 @@ public class GridBuildingSystem : MonoBehaviour
 
 		isMoving = true;
         FollowBuilding();
-        EditPanel.SetActive(false);
+        EditPanel.HideInvantory(true);
     }
 
     private void ClearArea()

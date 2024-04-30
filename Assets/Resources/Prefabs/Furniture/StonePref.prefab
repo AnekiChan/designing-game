@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8823627886192444870}
   - component: {fileID: 1107697558321469875}
+  - component: {fileID: 784097445845077047}
+  - component: {fileID: 6636549171498558741}
   m_Layer: 0
   m_Name: StonePref
   m_TagString: Untagged
@@ -26,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3344940112803773403}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4550505, y: 0.10527487, z: 32.51364}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -45,16 +47,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8c00794e7085a249bcbc014c7a10cf7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Icon: {fileID: 0}
+  Icon: {fileID: 1547307621, guid: 8655b8c5901421b48aa4011a3cc6ad9c, type: 3}
   SaveId: -1
   area:
     m_Position: {x: 0, y: 0, z: 0}
-    m_Size: {x: 0, y: 0, z: 0}
-  sprites: []
-  colliders: []
+    m_Size: {x: 1, y: 1, z: 1}
+  sprites:
+  - {fileID: 7514293618950409610}
+  colliders:
+  - {fileID: 784097445845077047}
   iSOccupied: 0
   isSitting: 0
   SeatPos: {fileID: 0}
+--- !u!58 &784097445845077047
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344940112803773403}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.14
+--- !u!208 &6636549171498558741
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344940112803773403}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.165, y: 0.06, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.03, y: -0.03, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &7514293618950409610
 GameObject:
   m_ObjectHideFlags: 0
@@ -81,7 +136,7 @@ Transform:
   m_GameObject: {fileID: 7514293618950409610}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.4550505, y: -0.10527487, z: -32.51364}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

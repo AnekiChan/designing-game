@@ -55,9 +55,14 @@ public class SleepState : State
     {
         base.Exit();
 		//Debug.Log("sleep exit");
-		if (_closestSeat != null) _closestSeat.iSOccupied = false;
+		
 		_creature.Animator.SetBool("IsSleeping", false);
-		_closestSeat.gameObject.GetComponent<NavMeshObstacle>().enabled = true;
+		if (_closestSeat != null)
+        {
+			_closestSeat.iSOccupied = false;
+			_closestSeat.gameObject.GetComponent<NavMeshObstacle>().enabled = true;
+
+		}
 	}
 
     public override void Update()

@@ -15,7 +15,7 @@ public static class Connection
         DbConnection.Open();
         if (DbConnection.State == ConnectionState.Open)
         {
-            Debug.Log("DB open");
+            //Debug.Log("DB open");
             /*
             SqliteCommand cmd = new SqliteCommand();
             cmd.Connection = DbConnection;

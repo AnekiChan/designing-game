@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class Inventory : MonoBehaviour
 {
+    [SerializeField] private GridSystem gridSystem;
+
     [SerializeField] private InventoryCell _inventoryCellTemplate;
     [SerializeField] private Transform _container;
     [SerializeField] private Transform _draggingParent;
@@ -18,11 +20,20 @@ public class Inventory : MonoBehaviour
 
 	public GridBuildingSystem currentGrid;
 
-    public void OnEnable()
+    [SerializeField] private Button _exteriorButton;
+
+	private void Awake()
+	{
+        
+	}
+
+	public void OnEnable()
     {
         SetExteriorPanel();
         Render(Connection.GetPlants());
-    }
+        _exteriorButton.Select();
+        _exteriorButton.interactable = true;
+	}
 
     public void Render(List<Furniture> furnitures)
     {
@@ -34,7 +45,7 @@ public class Inventory : MonoBehaviour
 		foreach (Furniture furniture in furnitures)
         {
 			var cell = Instantiate(_inventoryCellTemplate, _container);
-			cell.Render(furniture, currentGrid);
+			cell.Render(furniture, gridSystem.GetObjectGrid(furniture));
 		}
     }
 
@@ -95,6 +106,21 @@ public class Inventory : MonoBehaviour
 
         RenderBigFurniture();
 	}
+
+    public void HideInvantory(bool b)
+    {
+		CanvasGroup canvasGroup = GetComponent<CanvasGroup>();
+		if (b)
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = false;
+        }
+        else
+        {
+			canvasGroup.alpha = 1f;
+			canvasGroup.interactable = true;
+		}
+    }
 }
 
 public enum GridType
