@@ -23,7 +23,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     public Building temp;
     private Vector3 prevPos;
-    public Transform Parent;
+    private Transform _parent;
     public int LayerNumber;
 
     private BoundsInt prevArea;
@@ -39,6 +39,8 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void Start()
     {
+        _parent = transform.parent;
+
         tileBases.Add(TileType.Empty, null);
         tileBases.Add(TileType.White, whiteTile);
         tileBases.Add(TileType.Green, greenTile);
@@ -189,13 +191,21 @@ public class GridBuildingSystem : MonoBehaviour
         SetTilesBlock(area, TileType.Green, MainTilemap);
     }
 
+    public void CreateMainArea(BoundsInt area)
+    {
+		int size = area.size.x * area.size.y * area.size.z;
+		TileBase[] tileArray = new TileBase[size];
+		FillTiles(tileArray, TileType.White);
+		MainTilemap.SetTilesBlock(area, tileArray);
+	}
+
     #endregion
 
     #region Building Placement
 
     public void InitializeWithBuilding(GameObject building)
     {
-        GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, Parent);
+        GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
         obj.layer = gameObject.layer;
         temp = obj.GetComponent<Building>();
 		//temp.transform.parent = Parent;
@@ -205,7 +215,7 @@ public class GridBuildingSystem : MonoBehaviour
         EditPanel.HideInvantory(true);
     }
 
-    private void ClearArea()
+	private void ClearArea()
     {
         TileBase[] toClear = new TileBase[prevArea.size.x * prevArea.size.y * prevArea.size.z];
         FillTiles(toClear, TileType.Empty);

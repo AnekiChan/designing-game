@@ -34,6 +34,47 @@ public static class Connection
         DbConnection.Close();
     }
 
+	public static Furniture GetObjectById(int id)
+	{
+		Furniture furniture = null;
+		DbConnection.Open();
+		if (DbConnection.State == ConnectionState.Open)
+		{
+			
+			try
+			{
+				SqliteCommand cmd = new SqliteCommand();
+				cmd.Connection = DbConnection;
+				cmd.CommandText = $"SELECT * FROM furniture WHERE id={id}";
+				SqliteDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					GameObject obj = Resources.Load("Prefabs/Furniture/" + reader[2].ToString()) as GameObject;
+					if (obj == null) Debug.Log("null " + reader[2].ToString());
+
+					furniture = new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString()));
+					//Debug.Log(String.Format("{0} {1}", reader[0], reader[1]));
+
+				}
+
+				DbConnection.Close();
+				return furniture;
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+
+				DbConnection.Close();
+				return null;
+			}
+		}
+		else
+		{
+			Debug.Log("Error connection");
+			DbConnection.Close();
+			return null;
+		}
+	}
     public static List<Furniture> GetObjects(string command)
     {
         List<Furniture> furnitures = new List<Furniture>();
@@ -77,8 +118,8 @@ public static class Connection
             return null;
 		}
 	}
-
-    public static List<Furniture> GetPlants() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='plants')");
+	public static List<Furniture> GetHouses() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='house')");
+	public static List<Furniture> GetPlants() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='plants')");
 	public static List<Furniture> GetOutdors() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='outdoors')");
 	public static List<Furniture> GetBigFurniture() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='bigfurniture')");
 	public static List<Furniture> GetSmallFurniture() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='smallfurniture')");

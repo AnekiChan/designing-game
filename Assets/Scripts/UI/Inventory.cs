@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,8 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Animator _exAnimator;
 	[SerializeField] private Animator _inAnimator;
 
+	//public static Action<bool> onEdited;
+
 	private void Awake()
 	{
         //_exteriorButton.Select();
@@ -33,12 +36,17 @@ public class Inventory : MonoBehaviour
 	public void OnEnable()
     {
         SetExteriorPanel();
-        Render(Connection.GetPlants());
+        Render(Connection.GetHouses());
+		//onEdited.Invoke(false);
         
         //_exteriorButton.interactable = true;
 	}
+	private void OnDisable()
+	{
+		//onEdited.Invoke(true);
+	}
 
-    public void Render(List<Furniture> furnitures)
+	public void Render(List<Furniture> furnitures)
     {
         foreach (Transform child in _container)
         {
@@ -52,16 +60,22 @@ public class Inventory : MonoBehaviour
 		}
     }
 
-    public void RenderPlants()
+	public void RenderHouses()
+	{
+		Render(Connection.GetPlants());
+		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[0];
+	}
+
+	public void RenderPlants()
     {
         Render(Connection.GetPlants());
-        _CurrentExteriorPanel.GetComponent<Image>().sprite = _images[0];
+        _CurrentExteriorPanel.GetComponent<Image>().sprite = _images[1];
     }
 
     public void RenderOutdoors()
     {
         Render(Connection.GetOutdors());
-		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[1];
+		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[2];
 	}
 
     public void RenderBigFurniture()

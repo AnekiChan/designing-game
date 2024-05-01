@@ -36,10 +36,36 @@ public class SavingSystem : MonoBehaviour
         foreach (SaveObj obj in list)
         {
             GameObject prefab = Resources.Load("Prefabs/Furniture/" + Connection.GetPrefab(obj.Object_Id)) as GameObject;
+            Furniture fur = Connection.GetObjectById(obj.Object_Id);
+            ParentType parentType = _gridSystem.GetObjectParentType(fur);
+            GameObject parentObject;
+            switch (parentType)
+            {
+                case ParentType.Exterior:
+                    {
+                        parentObject = Exterior;
+                    }
+                    break;
+                case ParentType.Interior:
+                    {
+                        parentObject = Interior;
+                    }
+					break;
+                case ParentType.Decore:
+                    {
+                        parentObject = Decore;
+                    }
+					break;
+                default:
+                    {
+                        parentObject = Exterior;
+                    }
+					break;
+            }
             int objLayer = _gridSystem.GetFurnitureLayer(Connection.GetType(obj.Object_Id));
 
             //Debug.Log(objLayer);
-			GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, Exterior.transform);
+			GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
 			furniture.layer = objLayer;
             furniture.GetComponent<Building>().TurnSide(obj.Side);
 
