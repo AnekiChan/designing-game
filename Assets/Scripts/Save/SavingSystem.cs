@@ -96,6 +96,8 @@ public class SavingSystem : MonoBehaviour
 					break;
 			}*/
 		}
+
+        //_gridSystem.CreateInteriorGrid();
     }
 
     public void SaveAll()

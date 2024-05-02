@@ -79,7 +79,7 @@ public class GridBuildingSystem : MonoBehaviour
                 int mask = 1 << LayerNumber;
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
 
-                if (hit.collider != null)
+                if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject())
                 {
                     //Debug.Log("CLICKED " + hit.collider.name);
                     ClearPrev(hit.collider.gameObject.GetComponent<Building>());
@@ -101,7 +101,7 @@ public class GridBuildingSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                ClearArea();
+                ClearTempArea();
                 // delete sql
                 Destroy(temp.gameObject);
                 isMoving = false;
@@ -110,7 +110,7 @@ public class GridBuildingSystem : MonoBehaviour
             }
             else if (Input.GetMouseButtonDown(1))
             {
-                ClearArea();
+                ClearTempArea();
                 prevArea = temp.area;
                 temp.TurnSide();
                 FollowBuilding();
@@ -199,9 +199,10 @@ public class GridBuildingSystem : MonoBehaviour
         SetTilesBlock(area, TileType.Green, MainTilemap);
     }
 
-    public void CreateMainArea(BoundsInt area)
+    public void CreateMainArea(BoundsInt area, Transform pos)
     {
 		int size = area.size.x * area.size.y * area.size.z;
+		area.position = gridLayout.WorldToCell(pos.position);
 		TileBase[] tileArray = new TileBase[size];
 		FillTiles(tileArray, TileType.White);
 		MainTilemap.SetTilesBlock(area, tileArray);
@@ -231,16 +232,30 @@ public class GridBuildingSystem : MonoBehaviour
 		obj.GetComponent<Building>().TurnSide(side);
 	}*/
 
-	private void ClearArea()
+	private void ClearTempArea()
     {
         TileBase[] toClear = new TileBase[prevArea.size.x * prevArea.size.y * prevArea.size.z];
         FillTiles(toClear, TileType.Empty);
         TempTilemap.SetTilesBlock(prevArea, toClear);
     }
 
-    private void FollowBuilding()
+	public void ClearMainArea()
+	{
+		BoundsInt bounds = MainTilemap.cellBounds;
+		TileBase[] allTiles = MainTilemap.GetTilesBlock(bounds);
+
+		foreach (var position in bounds.allPositionsWithin)
+		{
+			if (MainTilemap.HasTile(position))
+			{
+				MainTilemap.SetTile(position, tileBases[TileType.Empty]);
+			}
+		}
+	}
+
+	private void FollowBuilding()
     {
-        ClearArea();
+        ClearTempArea();
 
         temp.area.position = gridLayout.WorldToCell(temp.gameObject.transform.position);
         BoundsInt buildingArea = temp.area;
@@ -269,7 +284,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void ClearPrev(Building prevTemp)
     {
-        ClearArea();
+        ClearTempArea();
 
         prevTemp.area.position = gridLayout.WorldToCell(prevTemp.gameObject.transform.position);
         BoundsInt buildingArea = prevTemp.area;

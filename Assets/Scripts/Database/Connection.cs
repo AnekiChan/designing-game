@@ -288,6 +288,41 @@ public static class Connection
 			return 0;
 		}
 	}
+	/*
+	public static int GetTypeId(string type)
+	{
+		DbConnection.Open();
+		if (DbConnection.State == ConnectionState.Open)
+		{
+			try
+			{
+				int typeId = 0;
+				SqliteCommand cmd = new SqliteCommand();
+				cmd.Connection = DbConnection;
+				cmd.CommandText = $"SELECT id FROM types WHERE type={type}";
+				SqliteDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					typeId = Int32.Parse(reader[0].ToString());
+				}
+				DbConnection.Close();
+				return typeId;
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+				DbConnection.Close();
+				return 0;
+			}
+
+		}
+		else
+		{
+			Debug.Log("Error connection");
+			DbConnection.Close();
+			return 0;
+		}
+	}*/
 
 	//public static void DeleteFromSave(str)
 }

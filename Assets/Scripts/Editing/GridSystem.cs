@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,11 +77,15 @@ public class GridSystem : MonoBehaviour
 
 	public void CreateInteriorGrid()
 	{
+		InteriorGrid.GetComponent<GridBuildingSystem>().ClearMainArea();
+
 		GameObject[] houses = GameObject.FindGameObjectsWithTag("HasInterior");
 		foreach (GameObject house in houses)
 		{
 			BoundsInt prevArea = house.GetComponent<Building>().area;
-			InteriorGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea);
+			prevArea.position = new Vector3Int(Convert.ToInt32(house.transform.position.x), Convert.ToInt32(house.transform.position.y), Convert.ToInt32(house.transform.position.z));
+			Debug.Log(prevArea);
+			InteriorGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea, house.transform);
 		}
 	}
 }
