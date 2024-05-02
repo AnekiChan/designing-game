@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1083963307268227488}
   - component: {fileID: 6811330947675162071}
   - component: {fileID: 8648774813985610431}
+  - component: {fileID: -409746740823742336}
   m_Layer: 0
   m_Name: StrawberryMilkHouse
   m_TagString: HasInterior
@@ -109,6 +110,20 @@ PolygonCollider2D:
       - {x: -0.04992044, y: -0.19251776}
       - {x: 2.9584517, y: 1.4896376}
   m_UseDelaunayMesh: 0
+--- !u!114 &-409746740823742336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007289387202245102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a073ac554a75b554989e5f0f297bf8dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colliders:
+  - {fileID: 8648774813985610431}
 --- !u!1 &3077042785989366176
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +229,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 461007967
   m_SortingLayer: 2
-  m_SortingOrder: 1
+  m_SortingOrder: 0
   m_Sprite: {fileID: -2077563160, guid: aa9a84b591205b649ab66f815c0336ef, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

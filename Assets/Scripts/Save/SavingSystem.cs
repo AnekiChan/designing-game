@@ -63,10 +63,25 @@ public class SavingSystem : MonoBehaviour
 					}
 					break;
             }
-            //GridBuildingSystem grid = _gridSystem.GetObjectGrid(fur);
-            //grid.InitializeWithBuildingFromSave(prefab, new Vector2(obj.X, obj.Y), obj.Side);
-
-            GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
+			//GridBuildingSystem grid = _gridSystem.GetObjectGrid(fur);
+			//grid.InitializeWithBuildingFromSave(prefab, new Vector2(obj.X, obj.Y), obj.Side);
+			/*
+			GameObject furniture = null;
+			Ray ray = new Ray(new Vector3(obj.X, obj.Y, 0), Vector3.forward);
+			RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
+			foreach(RaycastHit2D hit in hits)
+			{
+				if (hit.collider != null && hit.collider.tag == "HasInterior")
+				{
+					Debug.Log("HITTED " + hit.collider.name);
+					furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, hit.collider.transform);
+					break;
+				}
+			}
+			if (furniture == null)
+				furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
+			*/
+			GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
 			furniture.layer = objLayer;
             furniture.GetComponent<Building>().TurnSide(obj.Side);
 

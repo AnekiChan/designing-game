@@ -79,7 +79,7 @@ public class GridBuildingSystem : MonoBehaviour
                 int mask = 1 << LayerNumber;
                 RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
 
-                if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject())
+                if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag != "HasInterior")
                 {
                     //Debug.Log("CLICKED " + hit.collider.name);
                     ClearPrev(hit.collider.gameObject.GetComponent<Building>());
@@ -128,8 +128,24 @@ public class GridBuildingSystem : MonoBehaviour
 
         }
 
-        
-    }
+        // удаление дома
+		if (!isMoving && Input.GetMouseButtonDown(1))
+        {
+			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+			RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
+            foreach(var hit in hits)
+            {
+				if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "HasInterior")
+				{
+					Debug.Log("CLICKED " + hit.collider.name);
+					ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+					Destroy(hit.collider.transform.gameObject);
+                    break;
+				}
+			}
+		}
+
+	}
 
     private void ActiveTemptilemap(bool b)
     {
@@ -217,7 +233,6 @@ public class GridBuildingSystem : MonoBehaviour
         GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
         obj.layer = gameObject.layer;
         temp = obj.GetComponent<Building>();
-		//temp.transform.parent = Parent;
 
 		isMoving = true;
         FollowBuilding();

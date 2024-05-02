@@ -84,8 +84,24 @@ public class GridSystem : MonoBehaviour
 		{
 			BoundsInt prevArea = house.GetComponent<Building>().area;
 			prevArea.position = new Vector3Int(Convert.ToInt32(house.transform.position.x), Convert.ToInt32(house.transform.position.y), Convert.ToInt32(house.transform.position.z));
-			Debug.Log(prevArea);
+			
 			InteriorGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea, house.transform);
+		}
+	}
+
+	public void CreateDecoreGrid()
+	{
+		DecoreGrid.GetComponent<GridBuildingSystem>().ClearMainArea();
+
+		GameObject[] houses = GameObject.FindGameObjectsWithTag("HasInterior");
+		foreach (GameObject house in houses)
+		{
+			BoundsInt houseArea = house.GetComponent<Building>().area;
+			BoundsInt prevArea = new BoundsInt();
+			prevArea.size = new Vector3Int(houseArea.size.x * 2-1, houseArea.size.y * 2-1, houseArea.size.z);
+			prevArea.position = new Vector3Int(Convert.ToInt32(house.transform.position.x), Convert.ToInt32(house.transform.position.y), Convert.ToInt32(house.transform.position.z));
+			
+			DecoreGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea, house.transform);
 		}
 	}
 }

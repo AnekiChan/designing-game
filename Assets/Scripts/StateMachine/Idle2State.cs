@@ -15,7 +15,7 @@ public class Idle2State : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("idle2 enter");
+        //Debug.Log("idle2 enter");
         _timer = Random.Range(4, 7);
         _creature.Animator.SetBool("IsIdle2", true);
     }
