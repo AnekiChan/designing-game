@@ -5,24 +5,59 @@ using UnityEngine.Tilemaps;
 
 public class GridSystem : MonoBehaviour
 {
-	[SerializeField] GameObject Exterior;
+	[SerializeField] GameObject ExteriorGrid;
 	[SerializeField] List<int> exteriorIds;
-	[SerializeField] GameObject Interior;
+	[SerializeField] GameObject InteriorGrid;
 	[SerializeField] List<int> interiorIds;
-	[SerializeField] GameObject Decore;
+	[SerializeField] GameObject DecoreGrid;
 	[SerializeField] List<int> decoreIds;
 
 	private void Start()
 	{
-		Interior.SetActive(false);
-		Decore.SetActive(false);
+		ExteriorGrid.SetActive(false);
+		InteriorGrid.SetActive(false);
+		DecoreGrid.SetActive(false);
+	}
+	private void OnEnable()
+	{
+		Inventory.onEdited += Editing;
+	}
+	private void OnDisable()
+	{
+		Inventory.onEdited -= Editing;
+	}
+
+	private void Editing(bool isEditing)
+	{
+		if (isEditing)
+		{
+			if (ExteriorGrid != null)
+			{
+				ExteriorGrid.SetActive(true);
+			}
+		}
+		else
+		{
+			if (ExteriorGrid != null)
+			{
+				ExteriorGrid.SetActive(false);
+			}
+			if (InteriorGrid != null)
+			{
+				InteriorGrid.SetActive(false);
+			}
+			if (DecoreGrid != null)
+			{
+				DecoreGrid.SetActive(false);
+			}
+		}
 	}
 
 	public GridBuildingSystem GetObjectGrid(Furniture furniture)
 	{
-		if (exteriorIds.Contains(furniture.Type)) return Exterior.GetComponent<GridBuildingSystem>();
-		else if (interiorIds.Contains(furniture.Type)) return Interior.GetComponent<GridBuildingSystem>();
-		else return Decore.GetComponent<GridBuildingSystem>();
+		if (exteriorIds.Contains(furniture.Type)) return ExteriorGrid.GetComponent<GridBuildingSystem>();
+		else if (interiorIds.Contains(furniture.Type)) return InteriorGrid.GetComponent<GridBuildingSystem>();
+		else return DecoreGrid.GetComponent<GridBuildingSystem>();
 	}
 
 	public ParentType GetObjectParentType(Furniture furniture)
@@ -32,11 +67,11 @@ public class GridSystem : MonoBehaviour
 		else return ParentType.Decore;
 	}
 
-	public int GetFurnitureLayer(int id)
+	public int GetFurnitureLayer(int typeId)
 	{
-		if (exteriorIds.Contains(id)) return Exterior.layer;
-		else if (interiorIds.Contains(id)) return Interior.layer;
-		else return Decore.layer;
+		if (exteriorIds.Contains(typeId)) return ExteriorGrid.layer;
+		else if (interiorIds.Contains(typeId)) return InteriorGrid.layer;
+		else return DecoreGrid.layer;
 	}
 
 	public void CreateInteriorGrid()
@@ -45,7 +80,7 @@ public class GridSystem : MonoBehaviour
 		foreach (GameObject house in houses)
 		{
 			BoundsInt prevArea = house.GetComponent<Building>().area;
-			Interior.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea);
+			InteriorGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea);
 		}
 	}
 }

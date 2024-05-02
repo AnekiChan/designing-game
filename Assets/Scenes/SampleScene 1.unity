@@ -16836,11 +16836,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c194c7acc1a1e244e88e7aead35fdf49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Exterior: {fileID: 1104228009}
+  ExteriorGrid: {fileID: 1104228009}
   exteriorIds: 010000000200000008000000
-  Interior: {fileID: 363791657}
+  InteriorGrid: {fileID: 363791657}
   interiorIds: 03000000040000000600000007000000
-  Decore: {fileID: 270207161}
+  DecoreGrid: {fileID: 270207161}
   decoreIds: 05000000
 --- !u!114 &1290388326
 MonoBehaviour:

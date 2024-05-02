@@ -15,7 +15,7 @@ public class IdleState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("idle enter");
+        //Debug.Log("idle enter");
         _timer = Random.Range(5, 10);
     }
 

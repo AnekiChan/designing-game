@@ -37,6 +37,7 @@ public class SavingSystem : MonoBehaviour
         {
             GameObject prefab = Resources.Load("Prefabs/Furniture/" + Connection.GetPrefab(obj.Object_Id)) as GameObject;
             Furniture fur = Connection.GetObjectById(obj.Object_Id);
+            int objLayer = _gridSystem.GetFurnitureLayer(Connection.GetType(obj.Object_Id));
             ParentType parentType = _gridSystem.GetObjectParentType(fur);
             GameObject parentObject;
             switch (parentType)
@@ -47,25 +48,25 @@ public class SavingSystem : MonoBehaviour
                     }
                     break;
                 case ParentType.Interior:
-                    {
-                        parentObject = Interior;
-                    }
+					{
+						parentObject = Interior;
+					}
 					break;
                 case ParentType.Decore:
-                    {
-                        parentObject = Decore;
-                    }
+					{
+						parentObject = Decore;
+					}
 					break;
                 default:
-                    {
-                        parentObject = Exterior;
-                    }
+					{
+						parentObject = Exterior;
+					}
 					break;
             }
-            int objLayer = _gridSystem.GetFurnitureLayer(Connection.GetType(obj.Object_Id));
+            //GridBuildingSystem grid = _gridSystem.GetObjectGrid(fur);
+            //grid.InitializeWithBuildingFromSave(prefab, new Vector2(obj.X, obj.Y), obj.Side);
 
-            //Debug.Log(objLayer);
-			GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
+            GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
 			furniture.layer = objLayer;
             furniture.GetComponent<Building>().TurnSide(obj.Side);
 
@@ -100,9 +101,15 @@ public class SavingSystem : MonoBehaviour
     public void SaveAll()
     {
         Debug.Log("Save all");
-        GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Furniture");
+
+		GameObject[] gameObjectsHouses = GameObject.FindGameObjectsWithTag("HasInterior");
+		GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Furniture");
         Connection.ClearFurnitureTable();
-        foreach (GameObject obj in gameObjects)
+		foreach (GameObject obj in gameObjectsHouses)
+		{
+			Connection.Save(obj.name.Replace("(Clone)", ""), obj.transform.position.x, obj.transform.position.y, obj.GetComponent<Building>().Current_side);
+		}
+		foreach (GameObject obj in gameObjects)
         {
             Connection.Save(obj.name.Replace("(Clone)", ""), obj.transform.position.x, obj.transform.position.y, obj.GetComponent<Building>().Current_side);
         }

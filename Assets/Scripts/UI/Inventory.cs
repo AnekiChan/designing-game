@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Animator _exAnimator;
 	[SerializeField] private Animator _inAnimator;
 
-	//public static Action<bool> onEdited;
+	public static Action<bool> onEdited;
 
 	private void Awake()
 	{
@@ -35,15 +35,13 @@ public class Inventory : MonoBehaviour
 
 	public void OnEnable()
     {
-        SetExteriorPanel();
+		onEdited?.Invoke(true);
+		SetExteriorPanel();
         Render(Connection.GetHouses());
-		//onEdited.Invoke(false);
-        
-        //_exteriorButton.interactable = true;
 	}
 	private void OnDisable()
 	{
-		//onEdited.Invoke(true);
+		onEdited?.Invoke(false);
 	}
 
 	public void Render(List<Furniture> furnitures)
@@ -62,7 +60,7 @@ public class Inventory : MonoBehaviour
 
 	public void RenderHouses()
 	{
-		Render(Connection.GetPlants());
+		Render(Connection.GetHouses());
 		_CurrentExteriorPanel.GetComponent<Image>().sprite = _images[0];
 	}
 
@@ -117,7 +115,7 @@ public class Inventory : MonoBehaviour
         _exteriorPanel.SetActive(true);
         _interiorPanel.SetActive(false);
 
-        RenderPlants();
+        RenderHouses();
 	}
 
 	public void SetInteriorPanel()

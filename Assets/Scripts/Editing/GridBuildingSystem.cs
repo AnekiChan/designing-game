@@ -46,7 +46,7 @@ public class GridBuildingSystem : MonoBehaviour
         tileBases.Add(TileType.Green, greenTile);
         tileBases.Add(TileType.Red, redTile);
 
-		ActiveMaintilemap(false);
+		ActiveTemptilemap(false);
     }
 
     private void Update()
@@ -59,18 +59,17 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!isMoving)
                 {
                     isMoving = true;
-                    ActiveMaintilemap(true);
+                    ActiveTemptilemap(false);
 				}
                 else
                 {
                     if (temp.CanBePlaced(current))
                     {
                         isMoving = false;
-                        //temp.transform.SetParent(Parent);
                         temp.Place(current);
                         temp = null;
                         EditPanel.HideInvantory(false);
-						ActiveMaintilemap(false);
+						ActiveTemptilemap(false);
 					}
                 }
             }
@@ -88,7 +87,7 @@ public class GridBuildingSystem : MonoBehaviour
                     EditPanel.HideInvantory(true);
 					isMoving = true;
                     FollowBuilding();
-					ActiveMaintilemap(true);
+					ActiveTemptilemap(true);
 				}
             }
             
@@ -132,9 +131,18 @@ public class GridBuildingSystem : MonoBehaviour
         
     }
 
-    private void ActiveMaintilemap(bool b)
+    private void ActiveTemptilemap(bool b)
     {
+        /*
 		//MainTilemap.gameObject.SetActive(b);
+        if (b)
+        {
+            TempTilemap.gameObject.SetActive(true);
+        }
+        else
+        {
+			TempTilemap.gameObject.SetActive(false);
+		}*/
 	}
 
     #endregion
@@ -214,6 +222,14 @@ public class GridBuildingSystem : MonoBehaviour
         FollowBuilding();
         EditPanel.HideInvantory(true);
     }
+
+    /*
+	public void InitializeWithBuildingFromSave(GameObject building, Vector2 pos, int side)
+	{
+		GameObject obj = Instantiate(building, pos, Quaternion.identity, _parent);
+		obj.layer = gameObject.layer;
+		obj.GetComponent<Building>().TurnSide(side);
+	}*/
 
 	private void ClearArea()
     {
