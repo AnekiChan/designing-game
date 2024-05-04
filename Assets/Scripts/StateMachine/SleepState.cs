@@ -31,14 +31,19 @@ public class SleepState : State
         {
             if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) > 0.01f)
             {
-                _creature.Animator.SetFloat("Speed", _speed);
+				if (_closestSeat.SeatPos.position.x < _creature.transform.position.x)
+					_creature.GetComponent<SpriteRenderer>().flipX = false;
+				else
+					_creature.GetComponent<SpriteRenderer>().flipX = true;
+
+				_creature.Animator.SetFloat("Speed", _speed);
                 _agent.isStopped = false;
             }
 
 
             else
             {
-                _closestSeat.iSOccupied = true;
+				_closestSeat.iSOccupied = true;
                 _creature.Animator.SetBool("IsSleeping", true);
             }
             _closestSeat.gameObject.GetComponent<NavMeshObstacle>().enabled = false;

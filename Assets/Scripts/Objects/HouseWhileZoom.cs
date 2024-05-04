@@ -16,6 +16,11 @@ public class HouseWhileZoom : MonoBehaviour
 		CameraMovement.onZoomed -= ShowOrHide;
 	}
 
+	private void OnDestroy()
+	{
+		CameraMovement.onZoomed -= ShowOrHide;
+	}
+
 	private void Start()
 	{
 		_animator = GetComponent<Animator>();

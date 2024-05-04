@@ -19,12 +19,7 @@ public class Building : MonoBehaviour
     public bool isSitting = false;
     public Transform SeatPos;
 
-    public static Action onPlaced;
-
-	private void Start()
-	{
-        onPlaced.Invoke();
-	}
+    //public static Action onPlaced;
 
 	private void Awake()
     {
@@ -94,7 +89,7 @@ public class Building : MonoBehaviour
 
     public void Place(GridBuildingSystem grid)
     {
-        onPlaced.Invoke();
+        //onPlaced.Invoke();
         Vector3Int positionInt = grid.current.gridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = area;
         areaTemp.position = positionInt;

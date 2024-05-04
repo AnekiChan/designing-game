@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using System;
 
 public class GridBuildingSystem : MonoBehaviour
 {
@@ -30,9 +31,11 @@ public class GridBuildingSystem : MonoBehaviour
 
     public bool isMoving = false;
 
-    #region Unity Methods
+    public static Action onDestroyHouse;
 
-    private void Awake()
+	#region Unity Methods
+
+	private void Awake()
     {
         current = this;
 	}
@@ -75,24 +78,10 @@ public class GridBuildingSystem : MonoBehaviour
             }
             else
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                int mask = 1 << LayerNumber;
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
-
-                if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag != "HasInterior")
-                {
-                    //Debug.Log("CLICKED " + hit.collider.name);
-                    ClearPrev(hit.collider.gameObject.GetComponent<Building>());
-                    temp = hit.collider.gameObject.GetComponent<Building>();
-                    EditPanel.HideInvantory(true);
-					isMoving = true;
-                    FollowBuilding();
-					ActiveTemptilemap(true);
-				}
-            }
+                MoveObject();
+			}
             
         }
-        
 
         if (isMoving)
         {
@@ -101,20 +90,13 @@ public class GridBuildingSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                ClearTempArea();
-                // delete sql
-                Destroy(temp.gameObject);
-                isMoving = false;
-                temp = null;
-                EditPanel.HideInvantory(false);
-            }
+                RemoveObject();
+
+			}
             else if (Input.GetMouseButtonDown(1))
             {
-                ClearTempArea();
-                prevArea = temp.area;
-                temp.TurnSide();
-                FollowBuilding();
-            }
+                RotateObject();
+			}
 
             Vector2 touchPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int cellPos = gridLayout.LocalToCell(touchPos);
@@ -129,25 +111,70 @@ public class GridBuildingSystem : MonoBehaviour
         }
 
         // удаление дома
-		if (!isMoving && Input.GetMouseButtonDown(1))
+		if (UIManager.isHousesDestroyModeActive && !isMoving && Input.GetMouseButtonDown(0))
         {
-			Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-			RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
-            foreach(var hit in hits)
-            {
-				if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "HasInterior")
-				{
-					Debug.Log("CLICKED " + hit.collider.name);
-					ClearPrev(hit.collider.gameObject.GetComponent<Building>());
-					Destroy(hit.collider.transform.gameObject);
-                    break;
-				}
-			}
+            StartCoroutine(DestroyHouse());
 		}
 
 	}
 
-    private void ActiveTemptilemap(bool b)
+    private void MoveObject()
+    {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		int mask = 1 << LayerNumber;
+		RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
+
+		if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag != "HasInterior")
+		{
+			//Debug.Log("CLICKED " + hit.collider.name);
+			ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+			temp = hit.collider.gameObject.GetComponent<Building>();
+			EditPanel.HideInvantory(true);
+			isMoving = true;
+			FollowBuilding();
+			ActiveTemptilemap(true);
+		}
+	}
+
+	private IEnumerator DestroyHouse()
+	{
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
+		foreach (var hit in hits)
+		{
+			if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "HasInterior")
+			{
+				Debug.Log("Destroy " + hit.collider.name);
+				
+                ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+				onDestroyHouse.Invoke();
+				Destroy(hit.collider.transform.gameObject);
+                yield return new WaitForEndOfFrame();
+                onDestroyHouse.Invoke();
+				break;
+			}
+		}
+	}
+
+    private void RemoveObject()
+    {
+		ClearTempArea();
+		// delete sql
+		Destroy(temp.gameObject);
+		isMoving = false;
+		temp = null;
+		EditPanel.HideInvantory(false);
+	}
+
+    private void RotateObject()
+    {
+		ClearTempArea();
+		prevArea = temp.area;
+		temp.TurnSide();
+		FollowBuilding();
+	}
+
+	private void ActiveTemptilemap(bool b)
     {
         /*
 		//MainTilemap.gameObject.SetActive(b);
@@ -202,7 +229,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             if (b!= tileBases[TileType.White])
             {
-                Debug.Log("Can't place here");
+                //Debug.Log("Can't place here");
                 return false;
             }
         }

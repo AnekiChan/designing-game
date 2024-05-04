@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,10 @@ public class UIManager : MonoBehaviour
 {
     [SerializeField] private GameObject StandartPanel;
     [SerializeField] private GameObject EditPanel;
-    private bool isEditing = false;
+	[SerializeField] private GameObject EditInventory;
+	private bool isEditing = false;
+    public static Action<bool> onHousesDestroyMode;
+    public static bool isHousesDestroyModeActive = false;
 
     void Start()
     {
@@ -18,6 +22,8 @@ public class UIManager : MonoBehaviour
     {
         if (isEditing)
         {
+			isHousesDestroyModeActive = true;
+			DestroyHousesMode();
 			StandartPanel.SetActive(true);
 			EditPanel.SetActive(false);
             isEditing = false;
@@ -29,4 +35,26 @@ public class UIManager : MonoBehaviour
 			isEditing = true;
 		}
     }
+
+    public void DestroyHousesMode()
+    {
+        isHousesDestroyModeActive = !isHousesDestroyModeActive;
+        onHousesDestroyMode?.Invoke(isHousesDestroyModeActive);
+		HideInventory(isHousesDestroyModeActive);
+    }
+
+	public void HideInventory(bool b)
+	{
+		CanvasGroup canvasGroup = EditInventory.GetComponent<CanvasGroup>();
+		if (b)
+		{
+			canvasGroup.alpha = 0f;
+			canvasGroup.interactable = false;
+		}
+		else
+		{
+			canvasGroup.alpha = 1f;
+			canvasGroup.interactable = true;
+		}
+	}
 }

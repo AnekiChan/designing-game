@@ -22,10 +22,18 @@ public class GridSystem : MonoBehaviour
 	private void OnEnable()
 	{
 		Inventory.onEdited += Editing;
+		GridBuildingSystem.onDestroyHouse += CreateInteriorGrid;
 	}
 	private void OnDisable()
 	{
 		Inventory.onEdited -= Editing;
+		GridBuildingSystem.onDestroyHouse -= CreateInteriorGrid;
+	}
+
+	private void OnDestroy()
+	{
+		Inventory.onEdited -= Editing;
+		GridBuildingSystem.onDestroyHouse -= CreateInteriorGrid;
 	}
 
 	private void Editing(bool isEditing)

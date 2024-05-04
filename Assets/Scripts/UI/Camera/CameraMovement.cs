@@ -13,6 +13,7 @@ public class CameraMovement : MonoBehaviour
 	private Camera _camera;
     private bool _hideTopHouse = true;
     public static Action<bool> onZoomed;
+    private static bool isChanegingHouses = true;
 
     void Start()
     {
@@ -34,12 +35,12 @@ public class CameraMovement : MonoBehaviour
 
         CameraZoom(Input.GetAxis("Mouse ScrollWheel"));
 
-        if (_hideTopHouse && _camera.orthographicSize <= whenHide)
+        if (_hideTopHouse && _camera.orthographicSize <= whenHide && isChanegingHouses)
         {
             onZoomed.Invoke(true);
             _hideTopHouse = false;
         }
-        else if (!_hideTopHouse && _camera.orthographicSize > whenHide)
+        else if (!_hideTopHouse && _camera.orthographicSize > whenHide && isChanegingHouses)
         {
             onZoomed.Invoke(false);
             _hideTopHouse = true;
@@ -50,4 +51,15 @@ public class CameraMovement : MonoBehaviour
     {
         _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize - increment * sensitivity, minCameraSize, maxCameraSize);
     }
+
+    public static void ChangingHouses()
+    {
+        isChanegingHouses = true;
+	}
+
+	public static void NotChangingHouses()
+	{
+		isChanegingHouses = false;
+		onZoomed.Invoke(false);
+	}
 }
