@@ -37,12 +37,12 @@ public class CameraMovement : MonoBehaviour
 
         if (_hideTopHouse && _camera.orthographicSize <= whenHide && isChanegingHouses)
         {
-            onZoomed.Invoke(true);
+            onZoomed?.Invoke(true);
             _hideTopHouse = false;
         }
         else if (!_hideTopHouse && _camera.orthographicSize > whenHide && isChanegingHouses)
         {
-            onZoomed.Invoke(false);
+            onZoomed?.Invoke(false);
             _hideTopHouse = true;
         }
     }
@@ -60,6 +60,6 @@ public class CameraMovement : MonoBehaviour
 	public static void NotChangingHouses()
 	{
 		isChanegingHouses = false;
-		onZoomed.Invoke(false);
+		onZoomed?.Invoke(false);
 	}
 }

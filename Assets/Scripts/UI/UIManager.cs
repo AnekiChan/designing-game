@@ -12,29 +12,44 @@ public class UIManager : MonoBehaviour
     public static Action<bool> onHousesDestroyMode;
     public static bool isHousesDestroyModeActive = false;
 
-    void Start()
+	private void OnEnable()
+	{
+		EventBus.Instance.EditMode += ChangeEditMode;
+	}
+	private void OnDisable()
+	{
+		EventBus.Instance.EditMode -= ChangeEditMode;
+	}
+
+	void Start()
     {
-        StandartPanel.SetActive(true);
-        EditPanel.SetActive(false);
-    }
+		EventBus.Instance.EditMode?.Invoke(false);
+	}
 
     public void ChangePanel()
     {
         if (isEditing)
         {
-			isHousesDestroyModeActive = true;
-			DestroyHousesMode();
-			StandartPanel.SetActive(true);
-			EditPanel.SetActive(false);
-            isEditing = false;
+			EventBus.Instance.EditMode?.Invoke(false);
+			EventBus.Instance.SaveAllObjects?.Invoke();
 		}
         else
         {
-			StandartPanel.SetActive(false);
-			EditPanel.SetActive(true);
-			isEditing = true;
+			EventBus.Instance.EditMode?.Invoke(true);
 		}
+		isEditing = !isEditing;
     }
+
+	private void ChangeEditMode(bool state)
+	{
+		EditPanel.SetActive(state);
+		StandartPanel.SetActive(!state);
+		if (state)
+		{
+			isHousesDestroyModeActive = true;
+			DestroyHousesMode();
+		}
+	}
 
     public void DestroyHousesMode()
     {

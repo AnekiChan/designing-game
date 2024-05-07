@@ -25,7 +25,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] private Animator _exAnimator;
 	[SerializeField] private Animator _inAnimator;
 
-	public static Action<bool> onEdited;
+	//public static Action<bool> onEdited;
 
 	private void Awake()
 	{
@@ -35,13 +35,13 @@ public class Inventory : MonoBehaviour
 
 	public void OnEnable()
     {
-		onEdited?.Invoke(true);
+		//onEdited?.Invoke(true);
 		SetExteriorPanel();
         Render(Connection.GetHouses());
 	}
 	private void OnDisable()
 	{
-		onEdited?.Invoke(false);
+		//onEdited?.Invoke(false);
 	}
 
 	public void Render(List<Furniture> furnitures)
@@ -144,11 +144,4 @@ public class Inventory : MonoBehaviour
 			canvasGroup.interactable = true;
 		}
     }
-}
-
-public enum GridType
-{
-    Environment,
-    Interior,
-    Decore
 }

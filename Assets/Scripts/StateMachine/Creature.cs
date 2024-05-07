@@ -5,11 +5,12 @@ using UnityEngine.AI;
 
 public class Creature : MonoBehaviour
 {
+	[SerializeField] private CreatureScriptableObject creatureScriptableObject;
+
 	private StateMachine _stateMachine;
 	public Animator Animator;
 	public bool IsStateEnd = false;
 
-	public float speed = 2.5f;
 	private NavMeshAgent _agent;
 
 	private State _nextState = null;
@@ -17,12 +18,14 @@ public class Creature : MonoBehaviour
 	void Start()
 	{
 		Animator = GetComponent<Animator>();
+
 		_stateMachine = new StateMachine();
 		_stateMachine.Initialize(new IdleState(this));
 
 		_agent = GetComponent<NavMeshAgent>();
 		_agent.updateRotation = false;
 		_agent.updateUpAxis = false;
+		_agent.speed = creatureScriptableObject.Speed;
 	}
 
 	void Update()
@@ -58,8 +61,8 @@ public class Creature : MonoBehaviour
 
 				case 3:
 					{
-						_stateMachine.ChangeState(new SleepState(this));
-						_nextState = new IdleState(this);
+						_stateMachine.ChangeState(new SitState(this));
+						_nextState = new WalkState(this);
 					}
 					break;
 
@@ -76,12 +79,5 @@ public class Creature : MonoBehaviour
 			_stateMachine.ChangeState(_nextState);
 			_nextState = null;
 		}
-	}
-
-	private void OnTriggerEnter2D(Collider2D collision)
-	{
-		//Debug.Log(collision.gameObject.tag);
-		if (collision.gameObject.tag == "LeftWall" || collision.gameObject.tag == "RightWall")
-			IsStateEnd = true;
 	}
 }

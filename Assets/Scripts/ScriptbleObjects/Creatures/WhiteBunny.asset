@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 311df4ac9dcc83143ac33a2495f0e7e4, type: 3}
+  m_Name: WhiteBunny
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: White bunny
+  Prefab: {fileID: 5018623033539185434, guid: 8ed80309d7154714aae7d59f10614338, type: 3}
+  Speed: 2

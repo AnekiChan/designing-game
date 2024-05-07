@@ -122,17 +122,20 @@ public class GridBuildingSystem : MonoBehaviour
     {
 		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 		int mask = 1 << LayerNumber;
-		RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
+		RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2, mask);
 
-		if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag != "HasInterior")
-		{
-			//Debug.Log("CLICKED " + hit.collider.name);
-			ClearPrev(hit.collider.gameObject.GetComponent<Building>());
-			temp = hit.collider.gameObject.GetComponent<Building>();
-			EditPanel.HideInvantory(true);
-			isMoving = true;
-			FollowBuilding();
-			ActiveTemptilemap(true);
+        foreach (var hit in hits)
+        {
+			if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "Furniture")
+			{
+				//Debug.Log("CLICKED " + hit.collider.name);
+				ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+				temp = hit.collider.gameObject.GetComponent<Building>();
+				EditPanel.HideInvantory(true);
+				isMoving = true;
+				FollowBuilding();
+				ActiveTemptilemap(true);
+			}
 		}
 	}
 
@@ -214,6 +217,24 @@ public class GridBuildingSystem : MonoBehaviour
         tilemap.SetTilesBlock(area, tileArray);
     }
 
+    public void SetTilesByPosition(Tilemap tilemap, GameObject house)
+    {
+		BoundsInt bounds = tilemap.cellBounds;
+		bounds.position = new Vector3Int(Convert.ToInt32(house.transform.position.x), Convert.ToInt32(house.transform.position.y), Convert.ToInt32(house.transform.position.z));
+		foreach (var position in bounds.allPositionsWithin)
+		{
+			// Получаем тайл в указанной позиции
+			TileBase tile = tilemap.GetTile(position);
+
+			// Проверяем, равен ли тайл тому, которого мы ищем
+			if (tile == whiteTile)
+			{
+				// Если да, выводим информацию о тайле
+				MainTilemap.SetTile(position, whiteTile);
+			}
+		}
+	}
+
     private void FillTiles(TileBase[] array, TileType type)
     {
         for (int i = 0; i < array.Length; i++)
@@ -260,6 +281,7 @@ public class GridBuildingSystem : MonoBehaviour
         GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
         obj.layer = gameObject.layer;
         temp = obj.GetComponent<Building>();
+		EventBus.Instance.ChangeScore?.Invoke(Connection.GetObjectByPrefab(building.name).Score);
 
 		isMoving = true;
         FollowBuilding();

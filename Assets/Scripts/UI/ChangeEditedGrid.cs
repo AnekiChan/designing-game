@@ -7,6 +7,7 @@ public class ChangeEditedGrid : MonoBehaviour
     public GameObject EnvironmentGrid;
 	public GameObject InteriorGrid;
 	public GameObject DecoreGrid;
+	public GameObject WallGrid;
 
 	private void Start()
 	{
@@ -19,6 +20,7 @@ public class ChangeEditedGrid : MonoBehaviour
         DecoreGrid.SetActive(false);
         EnvironmentGrid.SetActive(true);
 		InteriorGrid.SetActive(false);
+		WallGrid.SetActive(false);
 	}
 
 	public void ChangeToInteriorGrid()
@@ -27,6 +29,7 @@ public class ChangeEditedGrid : MonoBehaviour
 		DecoreGrid.SetActive(false);
 		EnvironmentGrid.SetActive(false);
 		InteriorGrid.SetActive(true);
+		WallGrid.SetActive(false);
 	}
 
 	public void ChangeToDecoretGrid()
@@ -35,5 +38,15 @@ public class ChangeEditedGrid : MonoBehaviour
 		EnvironmentGrid.SetActive(false);
         DecoreGrid.SetActive(true);
 		InteriorGrid.SetActive(false);
+		WallGrid.SetActive(false);
+	}
+
+	public void ChangeToWallrGrid()
+	{
+		GetComponent<Inventory>().currentGrid = WallGrid.GetComponent<GridBuildingSystem>();
+		DecoreGrid.SetActive(false);
+		EnvironmentGrid.SetActive(false);
+		InteriorGrid.SetActive(false);
+		WallGrid.SetActive(true);
 	}
 }

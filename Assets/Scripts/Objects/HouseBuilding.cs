@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HouseBuilding : MonoBehaviour
@@ -28,19 +29,25 @@ public class HouseBuilding : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		furniture.Add(collision.gameObject);
+		if (collision.tag == "Furniture" && !furniture.Contains(collision.gameObject))
+		{
+			furniture.Add(collision.gameObject);
+		}
 	}
 
 	private void OnTriggerExit2D(Collider2D collision)
 	{
-		furniture.Remove(collision.gameObject);
+		if (collision.tag == "Furniture")
+			furniture.Remove(collision.gameObject);
 	}
 
 	private void DestroyFurniture()
 	{
-		for (int i = furniture.Count - 1; i >= 0; i--)
+		int count = furniture.Count - 1;
+		for (int i = count; i >= 0; i--)
 		{
-			Destroy(furniture[i]);
+			if (i < furniture.Count && furniture[i])
+				Destroy(furniture[i]);
 		}
 	}
 

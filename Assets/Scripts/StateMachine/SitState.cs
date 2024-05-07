@@ -4,15 +4,14 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class SleepState : State
+public class SitState : State
 {
     private Creature _creature;
     private float _timer;
     private Building _closestSeat;
-    private float _speed;
 	private NavMeshAgent _agent;
 
-	public SleepState(Creature creature)
+	public SitState(Creature creature)
     {
         _creature = creature;
 		_agent = creature.GetComponent<NavMeshAgent>();
@@ -21,9 +20,7 @@ public class SleepState : State
     public override void Enter()
     {
         base.Enter();
-        //Debug.Log("sleep enter");
-
-        _speed = _creature.speed;
+        //Debug.Log("sit enter");
 
         _closestSeat = FindSittingFurniture();
 
@@ -36,15 +33,15 @@ public class SleepState : State
 				else
 					_creature.GetComponent<SpriteRenderer>().flipX = true;
 
-				_creature.Animator.SetFloat("Speed", _speed);
+				_closestSeat.iSOccupied = true;
+				_creature.Animator.SetFloat("Speed", _agent.speed);
                 _agent.isStopped = false;
             }
-
 
             else
             {
 				_closestSeat.iSOccupied = true;
-                _creature.Animator.SetBool("IsSleeping", true);
+                _creature.Animator.SetBool("IsSitting", true);
             }
             _closestSeat.gameObject.GetComponent<NavMeshObstacle>().enabled = false;
             _timer = Random.Range(10, 20);
@@ -59,9 +56,9 @@ public class SleepState : State
     public override void Exit()
     {
         base.Exit();
-		//Debug.Log("sleep exit");
+		//Debug.Log("sit exit");
 		
-		_creature.Animator.SetBool("IsSleeping", false);
+		_creature.Animator.SetBool("IsSitting", false);
 		if (_closestSeat != null)
         {
 			_closestSeat.iSOccupied = false;
@@ -88,7 +85,7 @@ public class SleepState : State
     private Building FindSittingFurniture()
     {
 		int mask = 1 << 6;
-		Collider2D[] colliders = Physics2D.OverlapCircleAll(_creature.transform.position, 100f, mask);
+		Collider2D[] colliders = Physics2D.OverlapCircleAll(_creature.transform.position, 10f, mask);
 
         foreach (var collider in colliders)
         {
@@ -113,7 +110,7 @@ public class SleepState : State
         if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) < 0.01f)
         {
             _creature.Animator.SetFloat("Speed", 0);
-            _creature.Animator.SetBool("IsSleeping", true);
+            _creature.Animator.SetBool("IsSitting", true);
             _closestSeat.iSOccupied = true;
             _agent.isStopped = true;
         }

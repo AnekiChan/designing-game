@@ -7,6 +7,10 @@ TagManager:
   - Creature
   - Furniture
   - HasInterior
+  - LeftWall
+  - RightWall
+  - Walls
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -18,7 +22,7 @@ TagManager:
   - Decore
   - Creature
   - Exterior
-  - 
+  - Walls
   - 
   - 
   - 

@@ -7,8 +7,9 @@ public class SavingSystem : MonoBehaviour
     [SerializeField] GameObject Exterior;
     [SerializeField] GameObject Interior;
     [SerializeField] GameObject Decore;
+	[SerializeField] GameObject Walls;
 
-    [SerializeField] GridSystem _gridSystem;
+	[SerializeField] GridSystem _gridSystem;
 
     public static int _saveObjectLastId;
     void Start()
@@ -16,7 +17,16 @@ public class SavingSystem : MonoBehaviour
         Load();
     }
 
-    /*
+	private void OnEnable()
+	{
+		EventBus.Instance.SaveAllObjects += SaveAll;
+	}
+	private void OnDisable()
+	{
+		EventBus.Instance.SaveAllObjects -= SaveAll;
+	}
+
+	/*
     public static void SaveObj(GameObject obj)
     {
         if (obj.GetComponent<Building>().SaveId != -1)
@@ -29,7 +39,7 @@ public class SavingSystem : MonoBehaviour
 		}
 	}*/
 
-    public void Load()
+	public void Load()
     {
         List<SaveObj> list = Connection.GetSaveObjects();
 
@@ -57,7 +67,12 @@ public class SavingSystem : MonoBehaviour
 						parentObject = Decore;
 					}
 					break;
-                default:
+				case ParentType.Walls:
+					{
+						parentObject = Walls;
+					}
+					break;
+				default:
 					{
 						parentObject = Exterior;
 					}
@@ -84,6 +99,7 @@ public class SavingSystem : MonoBehaviour
 			GameObject furniture = Instantiate(prefab, new Vector2(obj.X, obj.Y), Quaternion.identity, parentObject.transform);
 			furniture.layer = objLayer;
             furniture.GetComponent<Building>().TurnSide(obj.Side);
+			EventBus.Instance.ChangeScore?.Invoke(fur.Score);
 
 			//if (_gridSystem.)
 			/*

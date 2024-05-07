@@ -12,27 +12,25 @@ public class GridSystem : MonoBehaviour
 	[SerializeField] List<int> interiorIds;
 	[SerializeField] GameObject DecoreGrid;
 	[SerializeField] List<int> decoreIds;
+	[SerializeField] GameObject WallGrid;
+	[SerializeField] List<int> wallIds;
 
 	private void Start()
 	{
 		ExteriorGrid.SetActive(false);
 		InteriorGrid.SetActive(false);
 		DecoreGrid.SetActive(false);
+		WallGrid.SetActive(false);
 	}
 	private void OnEnable()
 	{
-		Inventory.onEdited += Editing;
+		//Inventory.onEdited += Editing;
+		EventBus.Instance.EditMode += Editing;
 		GridBuildingSystem.onDestroyHouse += CreateInteriorGrid;
 	}
 	private void OnDisable()
 	{
-		Inventory.onEdited -= Editing;
-		GridBuildingSystem.onDestroyHouse -= CreateInteriorGrid;
-	}
-
-	private void OnDestroy()
-	{
-		Inventory.onEdited -= Editing;
+		EventBus.Instance.EditMode -= Editing;
 		GridBuildingSystem.onDestroyHouse -= CreateInteriorGrid;
 	}
 
@@ -59,6 +57,10 @@ public class GridSystem : MonoBehaviour
 			{
 				DecoreGrid.SetActive(false);
 			}
+			if (WallGrid != null)
+			{
+				WallGrid.SetActive(false);
+			}
 		}
 	}
 
@@ -66,6 +68,7 @@ public class GridSystem : MonoBehaviour
 	{
 		if (exteriorIds.Contains(furniture.Type)) return ExteriorGrid.GetComponent<GridBuildingSystem>();
 		else if (interiorIds.Contains(furniture.Type)) return InteriorGrid.GetComponent<GridBuildingSystem>();
+		else if (wallIds.Contains(furniture.Type)) return WallGrid.GetComponent<GridBuildingSystem>();
 		else return DecoreGrid.GetComponent<GridBuildingSystem>();
 	}
 
@@ -73,6 +76,7 @@ public class GridSystem : MonoBehaviour
 	{
 		if (exteriorIds.Contains(furniture.Type)) return ParentType.Exterior;
 		else if (interiorIds.Contains(furniture.Type)) return ParentType.Interior;
+		else if (wallIds.Contains(furniture.Type)) return ParentType.Walls;
 		else return ParentType.Decore;
 	}
 
@@ -80,11 +84,13 @@ public class GridSystem : MonoBehaviour
 	{
 		if (exteriorIds.Contains(typeId)) return ExteriorGrid.layer;
 		else if (interiorIds.Contains(typeId)) return InteriorGrid.layer;
+		else if (wallIds.Contains(typeId)) return WallGrid.layer;
 		else return DecoreGrid.layer;
 	}
 
 	public void CreateInteriorGrid()
 	{
+		InteriorGrid.transform.Rotate(new Vector3(0, 0, 0));
 		InteriorGrid.GetComponent<GridBuildingSystem>().ClearMainArea();
 
 		GameObject[] houses = GameObject.FindGameObjectsWithTag("HasInterior");
@@ -112,11 +118,45 @@ public class GridSystem : MonoBehaviour
 			DecoreGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea, house.transform);
 		}
 	}
+
+	public void CreateWallGrid()
+	{
+		WallGrid.GetComponent<GridBuildingSystem>().ClearMainArea();
+
+		GameObject[] houses = GameObject.FindGameObjectsWithTag("HasInterior");
+		foreach (GameObject house in houses)
+		{
+			BoundsInt prevArea = house.GetComponent<Building>().area;
+			prevArea.position = new Vector3Int(Convert.ToInt32(house.transform.position.x), Convert.ToInt32(house.transform.position.y), Convert.ToInt32(house.transform.position.z));
+
+			WallGrid.GetComponent<GridBuildingSystem>()?.CreateMainArea(prevArea, house.transform);
+		}
+	}
+
+	public void CreateLeftWall()
+	{
+		InteriorGrid.transform.Rotate(new Vector3(0, 0, 60));
+		InteriorGrid.GetComponent<GridBuildingSystem>().ClearMainArea();
+
+		GameObject[] houses = GameObject.FindGameObjectsWithTag("LeftWall");
+		
+		foreach(var house in houses)
+		{
+			Tilemap tilemap = house.GetComponent<Tilemap>();
+			InteriorGrid.GetComponent<GridBuildingSystem>().SetTilesByPosition(tilemap, house);
+		}
+	}
+
+	public void CreateRightWall()
+	{
+		InteriorGrid.transform.Rotate(new Vector3(0, 0, -60));
+	}
 }
 
 public enum ParentType
 {
 	Exterior,
 	Interior,
-	Decore
+	Decore,
+	Walls
 }
