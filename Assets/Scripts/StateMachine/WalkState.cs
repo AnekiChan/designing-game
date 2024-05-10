@@ -1,34 +1,62 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using UnityEngine.EventSystems;
 
 public class WalkState : State
 {
     private Creature _creature;
-    private float _speed = 0;
     private Vector3 _newPosition;
+
+    private NavMeshAgent _agent;
+    private bool _isCorrectPoint = false;
+    private NavMeshPath _navMeshPath;
 
     public WalkState(Creature creature)
     {
         _creature = creature;
-    }
+        _agent = creature.GetComponent<NavMeshAgent>();
+        _navMeshPath = new NavMeshPath();
+        //_agent.isStopped = false;
+	}
 
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("walk enter");
-        _speed = _creature.speed;
-        _creature.Animator.SetFloat("Speed", _speed);
-        _newPosition = new Vector2(_creature.transform.position.x + Random.Range(-7f, 7f), _creature.transform.position.y + Random.Range(-7f, 7f));
-        
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(_newPosition, 0.001f);  // если точка находитс€ в стене, то отмен€ем действие
-        foreach (Collider2D collider in colliders)
-        {
-            if (collider.gameObject.tag == "LeftWall" || collider.gameObject.tag == "RightWall")
-            {
-                _creature.IsStateEnd = true;
-            }
-        }
+        //Debug.Log("walk enter");
+        _creature.Animator.SetFloat("Speed", _agent.speed);
+
+        while (!_isCorrectPoint )
+		{
+			/*
+			_newPosition = new Vector2(_creature.transform.position.x + Random.Range(-4f, 4f), _creature.transform.position.y + Random.Range(-4f, 4f));
+            _agent.CalculatePath(_newPosition, _navMeshPath);
+            if (_navMeshPath.status == NavMeshPathStatus.PathComplete) 
+                _isCorrectPoint = true;
+            */
+
+			_newPosition = new Vector2(_creature.transform.position.x + Random.Range(-4f, 4f), _creature.transform.position.y + Random.Range(-4f, 4f));
+			Ray ray = new Ray(_newPosition, Vector3.forward);
+			RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
+			_isCorrectPoint = false;
+			foreach (var hit in hits)
+			{
+                _agent.CalculatePath(_newPosition, _navMeshPath);
+                if (hit.collider != null && hit.collider.tag == "Furniture")
+                    break;
+				else if (hit.collider != null && hit.collider.tag == "Ground" && _navMeshPath.status == NavMeshPathStatus.PathComplete)
+				{
+					_isCorrectPoint = true;
+                    break;
+				}
+			}
+		}
+
+        if (_newPosition.x < _creature.transform.position.x)
+            _creature.GetComponent<SpriteRenderer>().flipX = false;
+        else
+            _creature.GetComponent<SpriteRenderer>().flipX = true;
     }
 
     public override void Exit()
@@ -41,12 +69,13 @@ public class WalkState : State
     public override void Update()
     {
         base.Update();
-        //Debug.Log("walk update");
+        //_creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _newPosition, _speed * Time.deltaTime);
+        _agent.SetDestination(_newPosition);
 
-        _creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _newPosition, _speed * Time.deltaTime);
-        if (_creature.transform.position == _newPosition)
+        if (Vector2.Distance(_creature.transform.position, _newPosition) < 0.15f)
         {
-            _creature.IsStateEnd = true;
+			//_agent.isStopped = true;
+			_creature.IsStateEnd = true;
         }
     }
 

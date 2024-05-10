@@ -5,18 +5,24 @@ TagManager:
   serializedVersion: 2
   tags:
   - Creature
+  - Furniture
+  - HasInterior
+  - LeftWall
+  - RightWall
+  - Walls
+  - Ground
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
-  - Environment
+  - Interior
   - Decore
-  - 
-  - 
-  - 
+  - Creature
+  - Exterior
+  - Walls
   - 
   - 
   - 
@@ -39,15 +45,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Background
-    uniqueID: 1963403639
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Decore
-    uniqueID: 1106911729
+  - name: background
+    uniqueID: 480470243
     locked: 0
-  - name: Creature
-    uniqueID: 1720895961
+  - name: furniture
+    uniqueID: 461007967
+    locked: 0
+  - name: decore
+    uniqueID: 386063227
+    locked: 0
+  - name: creature
+    uniqueID: 2897819129
+    locked: 0
+  - name: ui
+    uniqueID: 2327052019
     locked: 0

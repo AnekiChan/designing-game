@@ -4,10 +4,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
+using System;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-    public GameObject EditPanel;
+	[SerializeField] private Inventory EditPanel;
 
     public GridBuildingSystem current;
 
@@ -23,26 +24,32 @@ public class GridBuildingSystem : MonoBehaviour
 
     public Building temp;
     private Vector3 prevPos;
-    public Transform Parent;
+    private Transform _parent;
     public int LayerNumber;
 
     private BoundsInt prevArea;
 
     public bool isMoving = false;
 
-    #region Unity Methods
+    public static Action onDestroyHouse;
 
-    private void Awake()
+	#region Unity Methods
+
+	private void Awake()
     {
         current = this;
 	}
 
     private void Start()
     {
+        _parent = transform.parent;
+
         tileBases.Add(TileType.Empty, null);
         tileBases.Add(TileType.White, whiteTile);
         tileBases.Add(TileType.Green, greenTile);
         tileBases.Add(TileType.Red, redTile);
+
+		ActiveTemptilemap(false);
     }
 
     private void Update()
@@ -55,38 +62,26 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!isMoving)
                 {
                     isMoving = true;
+                    ActiveTemptilemap(false);
 				}
                 else
                 {
                     if (temp.CanBePlaced(current))
                     {
                         isMoving = false;
-                        //temp.transform.SetParent(Parent);
                         temp.Place(current);
                         temp = null;
-                        EditPanel.SetActive(true);
-                    }
+                        EditPanel.HideInvantory(false);
+						ActiveTemptilemap(false);
+					}
                 }
             }
             else
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                int mask = 1 << LayerNumber;
-                RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction, 2, mask);
-
-                if (hit.collider != null)
-                {
-                    //Debug.Log("CLICKED " + hit.collider.name);
-                    ClearPrev(hit.collider.gameObject.GetComponent<Building>());
-                    temp = hit.collider.gameObject.GetComponent<Building>();
-                    EditPanel.SetActive(false);
-                    isMoving = true;
-                    FollowBuilding();
-                }
-            }
+                MoveObject();
+			}
             
         }
-        
 
         if (isMoving)
         {
@@ -95,19 +90,13 @@ public class GridBuildingSystem : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                ClearArea();
-                Destroy(temp.gameObject);
-                isMoving = false;
-                temp = null;
-                EditPanel.SetActive(true);
-            }
-            else if (Input.GetKeyDown(KeyCode.R))
+                RemoveObject();
+
+			}
+            else if (Input.GetMouseButtonDown(1))
             {
-                ClearArea();
-                prevArea = temp.area;
-                temp.TurnSide();
-                FollowBuilding();
-            }
+                RotateObject();
+			}
 
             Vector2 touchPos = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int cellPos = gridLayout.LocalToCell(touchPos);
@@ -121,8 +110,86 @@ public class GridBuildingSystem : MonoBehaviour
 
         }
 
-        
-    }
+        // удаление дома
+		if (UIManager.isHousesDestroyModeActive && !isMoving && Input.GetMouseButtonDown(0))
+        {
+            StartCoroutine(DestroyHouse());
+		}
+
+	}
+
+    private void MoveObject()
+    {
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		int mask = 1 << LayerNumber;
+		RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2, mask);
+
+        foreach (var hit in hits)
+        {
+			if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "Furniture")
+			{
+				//Debug.Log("CLICKED " + hit.collider.name);
+				ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+				temp = hit.collider.gameObject.GetComponent<Building>();
+				EditPanel.HideInvantory(true);
+				isMoving = true;
+				FollowBuilding();
+				ActiveTemptilemap(true);
+			}
+		}
+	}
+
+	private IEnumerator DestroyHouse()
+	{
+		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
+		foreach (var hit in hits)
+		{
+			if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "HasInterior")
+			{
+				Debug.Log("Destroy " + hit.collider.name);
+				
+                ClearPrev(hit.collider.gameObject.GetComponent<Building>());
+				onDestroyHouse.Invoke();
+				Destroy(hit.collider.transform.gameObject);
+                yield return new WaitForEndOfFrame();
+                onDestroyHouse.Invoke();
+				break;
+			}
+		}
+	}
+
+    private void RemoveObject()
+    {
+		ClearTempArea();
+		// delete sql
+		Destroy(temp.gameObject);
+		isMoving = false;
+		temp = null;
+		EditPanel.HideInvantory(false);
+	}
+
+    private void RotateObject()
+    {
+		ClearTempArea();
+		prevArea = temp.area;
+		temp.TurnSide();
+		FollowBuilding();
+	}
+
+	private void ActiveTemptilemap(bool b)
+    {
+        /*
+		//MainTilemap.gameObject.SetActive(b);
+        if (b)
+        {
+            TempTilemap.gameObject.SetActive(true);
+        }
+        else
+        {
+			TempTilemap.gameObject.SetActive(false);
+		}*/
+	}
 
     #endregion
 
@@ -150,6 +217,24 @@ public class GridBuildingSystem : MonoBehaviour
         tilemap.SetTilesBlock(area, tileArray);
     }
 
+    public void SetTilesByPosition(Tilemap tilemap, GameObject house)
+    {
+		BoundsInt bounds = tilemap.cellBounds;
+		bounds.position = new Vector3Int(Convert.ToInt32(house.transform.position.x), Convert.ToInt32(house.transform.position.y), Convert.ToInt32(house.transform.position.z));
+		foreach (var position in bounds.allPositionsWithin)
+		{
+			// Получаем тайл в указанной позиции
+			TileBase tile = tilemap.GetTile(position);
+
+			// Проверяем, равен ли тайл тому, которого мы ищем
+			if (tile == whiteTile)
+			{
+				// Если да, выводим информацию о тайле
+				MainTilemap.SetTile(position, whiteTile);
+			}
+		}
+	}
+
     private void FillTiles(TileBase[] array, TileType type)
     {
         for (int i = 0; i < array.Length; i++)
@@ -165,7 +250,7 @@ public class GridBuildingSystem : MonoBehaviour
         {
             if (b!= tileBases[TileType.White])
             {
-                Debug.Log("Can't place here");
+                //Debug.Log("Can't place here");
                 return false;
             }
         }
@@ -178,32 +263,63 @@ public class GridBuildingSystem : MonoBehaviour
         SetTilesBlock(area, TileType.Green, MainTilemap);
     }
 
+    public void CreateMainArea(BoundsInt area, Transform pos)
+    {
+		int size = area.size.x * area.size.y * area.size.z;
+		area.position = gridLayout.WorldToCell(pos.position);
+		TileBase[] tileArray = new TileBase[size];
+		FillTiles(tileArray, TileType.White);
+		MainTilemap.SetTilesBlock(area, tileArray);
+	}
+
     #endregion
 
     #region Building Placement
 
     public void InitializeWithBuilding(GameObject building)
     {
-        GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, Parent);
+        GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
         obj.layer = gameObject.layer;
         temp = obj.GetComponent<Building>();
-		//temp.transform.parent = Parent;
+		EventBus.Instance.ChangeScore?.Invoke(Connection.GetObjectByPrefab(building.name).Score);
 
 		isMoving = true;
         FollowBuilding();
-        EditPanel.SetActive(false);
+        EditPanel.HideInvantory(true);
     }
 
-    private void ClearArea()
+    /*
+	public void InitializeWithBuildingFromSave(GameObject building, Vector2 pos, int side)
+	{
+		GameObject obj = Instantiate(building, pos, Quaternion.identity, _parent);
+		obj.layer = gameObject.layer;
+		obj.GetComponent<Building>().TurnSide(side);
+	}*/
+
+	private void ClearTempArea()
     {
         TileBase[] toClear = new TileBase[prevArea.size.x * prevArea.size.y * prevArea.size.z];
         FillTiles(toClear, TileType.Empty);
         TempTilemap.SetTilesBlock(prevArea, toClear);
     }
 
-    private void FollowBuilding()
+	public void ClearMainArea()
+	{
+		BoundsInt bounds = MainTilemap.cellBounds;
+		TileBase[] allTiles = MainTilemap.GetTilesBlock(bounds);
+
+		foreach (var position in bounds.allPositionsWithin)
+		{
+			if (MainTilemap.HasTile(position))
+			{
+				MainTilemap.SetTile(position, tileBases[TileType.Empty]);
+			}
+		}
+	}
+
+	private void FollowBuilding()
     {
-        ClearArea();
+        ClearTempArea();
 
         temp.area.position = gridLayout.WorldToCell(temp.gameObject.transform.position);
         BoundsInt buildingArea = temp.area;
@@ -232,7 +348,7 @@ public class GridBuildingSystem : MonoBehaviour
 
     private void ClearPrev(Building prevTemp)
     {
-        ClearArea();
+        ClearTempArea();
 
         prevTemp.area.position = gridLayout.WorldToCell(prevTemp.gameObject.transform.position);
         BoundsInt buildingArea = prevTemp.area;

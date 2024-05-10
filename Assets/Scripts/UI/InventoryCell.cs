@@ -10,10 +10,11 @@ public class InventoryCell : MonoBehaviour
 
     public GridBuildingSystem _buildingSystem;
     
-    public void Render(IFurniture furniture, GridBuildingSystem grid)
+    public void Render(Furniture furniture, GridBuildingSystem grid)
     {
-        _iconField.sprite = furniture.UIIcon;
-        _furniturePref = furniture.Pref;
+		_furniturePref = furniture.Prefab;
+		_iconField.sprite = furniture.Prefab.GetComponent<Building>().Icon;
+        
         _buildingSystem = grid;
     }
 
