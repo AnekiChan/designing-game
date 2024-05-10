@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6191673561039875487}
   - component: {fileID: 6637563937237663466}
+  - component: {fileID: 6110520350753116158}
   m_Layer: 0
   m_Name: Sprite1
   m_TagString: Untagged
@@ -70,9 +71,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 461007967
-  m_SortingLayer: 2
-  m_SortingOrder: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
   m_Sprite: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -84,6 +85,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!208 &6110520350753116158
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7171901235076469513}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.425, y: 0.055, z: 0.1}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0.3, y: 0.21, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &8398926749963229753
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +113,7 @@ GameObject:
   - component: {fileID: 4405672685695047224}
   - component: {fileID: 1021579026156527315}
   - component: {fileID: 6618914850523819429}
-  - component: {fileID: 7836987149067138369}
+  - component: {fileID: 134614486849710678}
   m_Layer: 0
   m_Name: BathWithDuck
   m_TagString: Furniture
@@ -253,22 +270,18 @@ PolygonCollider2D:
       - {x: -0.14713013, y: -0.15465623}
       - {x: 0.2825427, y: 0.09410605}
   m_UseDelaunayMesh: 0
---- !u!208 &7836987149067138369
-NavMeshObstacle:
+--- !u!210 &134614486849710678
+SortingGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8398926749963229753}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Shape: 1
-  m_Extents: {x: 0.65, y: 0.155, z: 0.5}
-  m_MoveThreshold: 0.1
-  m_Carve: 0
-  m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0.37, z: 0}
-  m_TimeToStationary: 0.5
+  m_SortingLayerID: 461007967
+  m_SortingLayer: 2
+  m_SortingOrder: 3
+  m_SortAtRoot: 0
 --- !u!1 &8583443296988160635
 GameObject:
   m_ObjectHideFlags: 0
@@ -279,6 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1398666353151265232}
   - component: {fileID: 4711718092281674953}
+  - component: {fileID: 3984322903960002627}
   m_Layer: 0
   m_Name: Sprite2
   m_TagString: Untagged
@@ -339,9 +353,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 461007967
-  m_SortingLayer: 2
-  m_SortingOrder: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
   m_Sprite: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -353,3 +367,19 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!208 &3984322903960002627
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583443296988160635}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.455, y: 0.045, z: 0.1}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: -0.296, y: 0.24, z: 0}
+  m_TimeToStationary: 0.5

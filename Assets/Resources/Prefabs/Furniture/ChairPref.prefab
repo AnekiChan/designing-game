@@ -42,7 +42,8 @@ GameObject:
   - component: {fileID: 3946050769813079279}
   - component: {fileID: 8212125674224069599}
   - component: {fileID: 5842282885392197989}
-  - component: {fileID: 676434819960985421}
+  - component: {fileID: 8650456018118680242}
+  - component: {fileID: 6623448962541847022}
   m_Layer: 0
   m_Name: ChairPref
   m_TagString: Furniture
@@ -141,7 +142,19 @@ PolygonCollider2D:
       - {x: 0.29941767, y: -0.115612164}
       - {x: 0.29277223, y: 0.18192637}
   m_UseDelaunayMesh: 0
---- !u!208 &676434819960985421
+--- !u!210 &8650456018118680242
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5495437257041452111}
+  m_Enabled: 1
+  m_SortingLayerID: 461007967
+  m_SortingLayer: 2
+  m_SortingOrder: 3
+  m_SortAtRoot: 0
+--- !u!208 &6623448962541847022
 NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,11 +164,11 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 0.225, y: 0.06, z: 0.5}
+  m_Extents: {x: 0.25, y: 0.04, z: 0.5}
   m_MoveThreshold: 0.1
   m_Carve: 0
   m_CarveOnlyStationary: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.04, z: 0}
   m_TimeToStationary: 0.5
 --- !u!1 &6214737753424250180
 GameObject:
@@ -227,9 +240,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 461007967
-  m_SortingLayer: 2
-  m_SortingOrder: 3
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
   m_Sprite: {fileID: -16252408, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

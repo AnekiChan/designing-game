@@ -21,14 +21,18 @@ public class EventBus
 
 	#region UI
 	public Action<bool> EditMode;
+	public Action<int> ChangePlayerSortingLayer;
+	public Action SetStandartLayer;
 	#endregion
 
 	#region Save
 	public Action SaveAllObjects;
+	public Action LoadSave;
+	public Action DeleteSave;
 	#endregion
 
 	#region Gameplay
 	public Action<int> ChangeScore;
-	public Action<int> CheackScore;
+	public Action CheackScore;
 	#endregion
 }

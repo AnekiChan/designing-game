@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class Building : MonoBehaviour
@@ -97,5 +98,20 @@ public class Building : MonoBehaviour
         grid.current.TakeArea(areaTemp);
     }
 
-    #endregion
+	#endregion
+
+	private void OnTriggerStay2D(Collider2D collision)
+	{
+		if (collision?.gameObject.tag == "Creature" && gameObject.tag == "Furniture" && isSitting)
+        {
+            EventBus.Instance.ChangePlayerSortingLayer.Invoke(GetComponent<SortingGroup>().sortingOrder + 1);
+        }
+	}
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		if (collision?.gameObject.tag == "Creature" && gameObject.tag == "Furniture" && isSitting)
+        {
+            EventBus.Instance.SetStandartLayer.Invoke();
+        }
+	}
 }

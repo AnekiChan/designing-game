@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Score : MonoBehaviour
 {
-    private int _currentScore { get; set; } = 0;
+    public static int CurrentScore { get; private set; } = 0;
 
 	private void OnEnable()
 	{
@@ -17,13 +17,13 @@ public class Score : MonoBehaviour
 
 	private void AddScore(int score)
 	{
-		_currentScore += score;
-		EventBus.Instance.CheackScore?.Invoke(_currentScore);
+		CurrentScore += score;
+		EventBus.Instance.CheackScore?.Invoke();
 	}
 
 	private void RemoveScore(int score)
 	{
-		_currentScore -= score;
-		EventBus.Instance.CheackScore?.Invoke(_currentScore);
+		CurrentScore -= score;
+		EventBus.Instance.CheackScore?.Invoke();
 	}
 }

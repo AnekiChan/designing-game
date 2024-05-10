@@ -10,12 +10,14 @@ public class SitState : State
     private float _timer;
     private Building _closestSeat;
 	private NavMeshAgent _agent;
+	private NavMeshPath _navMeshPath;
 
 	public SitState(Creature creature)
     {
         _creature = creature;
 		_agent = creature.GetComponent<NavMeshAgent>();
-		_agent.isStopped = false;
+		_navMeshPath = new NavMeshPath();
+		//_agent.isStopped = false;
 	}
     public override void Enter()
     {
@@ -24,9 +26,10 @@ public class SitState : State
 
         _closestSeat = FindSittingFurniture();
 
-        if (_closestSeat != null)
+		if (_closestSeat != null && _navMeshPath.status == NavMeshPathStatus.PathComplete)
         {
-            if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) > 0.01f)
+			_agent.CalculatePath(_closestSeat.transform.position, _navMeshPath);
+			if (Vector2.Distance(_creature.transform.position, _closestSeat.SeatPos.position) > 0.01f)
             {
 				if (_closestSeat.SeatPos.position.x < _creature.transform.position.x)
 					_creature.GetComponent<SpriteRenderer>().flipX = false;
@@ -35,8 +38,11 @@ public class SitState : State
 
 				_closestSeat.iSOccupied = true;
 				_creature.Animator.SetFloat("Speed", _agent.speed);
-                _agent.isStopped = false;
-            }
+                //_agent.isStopped = false;
+
+				//_agent.enabled = false;
+				//_agent.enabled = true;
+			}
 
             else
             {
@@ -99,7 +105,7 @@ public class SitState : State
                 return obj;
             }
         }
-        Debug.Log("no seat near");
+        //Debug.Log("no seat near");
         return null;
     }
 
@@ -112,7 +118,7 @@ public class SitState : State
             _creature.Animator.SetFloat("Speed", 0);
             _creature.Animator.SetBool("IsSitting", true);
             _closestSeat.iSOccupied = true;
-            _agent.isStopped = true;
+            //_agent.isStopped = true;
         }
     }
 
@@ -125,7 +131,7 @@ public class SitState : State
         else
         {
             _closestSeat.iSOccupied = false;
-			_agent.isStopped = true;
+			//_agent.isStopped = true;
 			_creature.IsStateEnd = true;
         }
     }

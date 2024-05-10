@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField] private GameObject StandartPanel;
+	[SerializeField] private GameObject GameMenu;
+	[SerializeField] private GameObject StandartPanel;
     [SerializeField] private GameObject EditPanel;
 	[SerializeField] private GameObject EditInventory;
 	private bool isEditing = false;
@@ -23,7 +25,22 @@ public class UIManager : MonoBehaviour
 
 	void Start()
     {
-		EventBus.Instance.EditMode?.Invoke(false);
+		StandartPanel.SetActive(true);
+		EditPanel.SetActive(false);
+		GameMenu.SetActive(false);
+	}
+
+	public void OpenMainMenu()
+	{
+		SceneManager.LoadScene("MainMenu");
+		//StandartPanel.SetActive(false);
+		//GameMenu.SetActive(false);
+		//EditPanel.SetActive(false);
+	}
+
+	public void OpenGameMenu(bool open)
+	{
+		GameMenu.SetActive(open);
 	}
 
     public void ChangePanel()
@@ -32,6 +49,7 @@ public class UIManager : MonoBehaviour
         {
 			EventBus.Instance.EditMode?.Invoke(false);
 			EventBus.Instance.SaveAllObjects?.Invoke();
+			onHousesDestroyMode?.Invoke(false);
 		}
         else
         {

@@ -18,7 +18,7 @@ public class WalkState : State
         _creature = creature;
         _agent = creature.GetComponent<NavMeshAgent>();
         _navMeshPath = new NavMeshPath();
-        _agent.isStopped = false;
+        //_agent.isStopped = false;
 	}
 
     public override void Enter()
@@ -39,10 +39,13 @@ public class WalkState : State
 			_newPosition = new Vector2(_creature.transform.position.x + Random.Range(-4f, 4f), _creature.transform.position.y + Random.Range(-4f, 4f));
 			Ray ray = new Ray(_newPosition, Vector3.forward);
 			RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
-
+			_isCorrectPoint = false;
 			foreach (var hit in hits)
 			{
-				if (hit.collider != null && hit.collider.tag == "Ground")
+                _agent.CalculatePath(_newPosition, _navMeshPath);
+                if (hit.collider != null && hit.collider.tag == "Furniture")
+                    break;
+				else if (hit.collider != null && hit.collider.tag == "Ground" && _navMeshPath.status == NavMeshPathStatus.PathComplete)
 				{
 					_isCorrectPoint = true;
                     break;
@@ -69,9 +72,9 @@ public class WalkState : State
         //_creature.transform.position = Vector2.MoveTowards(_creature.transform.position, _newPosition, _speed * Time.deltaTime);
         _agent.SetDestination(_newPosition);
 
-        if (Vector2.Distance(_creature.transform.position, _newPosition) < 0.001f)
+        if (Vector2.Distance(_creature.transform.position, _newPosition) < 0.15f)
         {
-			_agent.isStopped = true;
+			//_agent.isStopped = true;
 			_creature.IsStateEnd = true;
         }
     }

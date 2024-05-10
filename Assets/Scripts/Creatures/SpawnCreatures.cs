@@ -4,11 +4,17 @@ using UnityEngine;
 
 public class SpawnCreatures : MonoBehaviour
 {
-    [SerializeField] List<CreatureScriptableObject> creaturesTypes = new List<CreatureScriptableObject>();
+    public List<CreatureScriptableObject> creaturesTypes = new List<CreatureScriptableObject>();
 	[SerializeField] List<CreatureScriptableObject> exsistingCreatures = new List<CreatureScriptableObject>();
 	[SerializeField] int maxCreatures;
     [SerializeField] int step;
     [SerializeField] Transform spawnPos;
+
+	private void Start()
+	{
+		creaturesTypes = Connection.GetCreatures();
+		StartCoroutine(LoadCreaturesOnStart());
+	}
 
 	private void OnEnable()
 	{
@@ -19,18 +25,18 @@ public class SpawnCreatures : MonoBehaviour
 		EventBus.Instance.CheackScore -= CheakCurrentCount;
 	}
 
-	public void CheakCurrentCount(int currentScore)
+	public void CheakCurrentCount()
     {
-        if (exsistingCreatures.Count < maxCreatures)
+        if (exsistingCreatures.Count < maxCreatures && creaturesTypes.Count > 0)
         {
-			while ((currentScore - step * exsistingCreatures.Count) >= step)
+			while ((Score.CurrentScore - step * exsistingCreatures.Count) >= step && exsistingCreatures.Count < maxCreatures)
 			{
                 SpawnCreature(creaturesTypes[Random.Range(0, creaturesTypes.Count)]);
 			}
 		}
         else
         {
-			EventBus.Instance.CheackScore -= CheakCurrentCount;
+			//EventBus.Instance.CheackScore -= CheakCurrentCount;
 		}
         
     }
@@ -41,5 +47,11 @@ public class SpawnCreatures : MonoBehaviour
 		exsistingCreatures.Add(creature);
         Debug.Log("Spawn " + creature.Name);
 
+	}
+
+	private IEnumerator LoadCreaturesOnStart()
+	{
+		yield return new WaitForSeconds(3f);
+		EventBus.Instance.CheackScore.Invoke();
 	}
 }

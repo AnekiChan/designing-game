@@ -12,7 +12,45 @@ public class SpriteSorting : MonoBehaviour
 		_spriteRenderer = GetComponent<SpriteRenderer>();
 		_deafultOrder = _spriteRenderer.sortingOrder;
 	}
+	private void OnEnable()
+	{
+		EventBus.Instance.ChangePlayerSortingLayer += ChageLayer;
+		EventBus.Instance.SetStandartLayer += ChangeToStandartLayer;
+	}
+	private void OnDisable()
+	{
+		EventBus.Instance.ChangePlayerSortingLayer -= ChageLayer;
+		EventBus.Instance.SetStandartLayer -= ChangeToStandartLayer;
+	}
+	private void OnDestroy()
+	{
+		EventBus.Instance.ChangePlayerSortingLayer -= ChageLayer;
+		EventBus.Instance.SetStandartLayer -= ChangeToStandartLayer;
+	}
 
+	private void ChageLayer(int _layer)
+	{
+		_spriteRenderer.sortingOrder = _layer;
+	}
+
+	private void ChangeToStandartLayer()
+	{
+		_spriteRenderer.sortingOrder = _deafultOrder;
+	}
+
+
+	/*
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+		RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, Vector3.forward, 2f);
+
+		if (hits.Length == 0 || (hits.Length == 1 && hits[0].collider?.gameObject.tag == "Walls"))
+		{
+			ChageLayer(_deafultOrder);
+		}
+	}*/
+
+	/*
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		switch (collision.tag)
@@ -60,4 +98,5 @@ public class SpriteSorting : MonoBehaviour
 			_spriteRenderer.sortingOrder = _deafultOrder;
 		}
 	}
+	*/
 }

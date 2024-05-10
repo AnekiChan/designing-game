@@ -736,7 +736,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b353282282793224a87f177b33237cb5, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -779,6 +779,7 @@ GameObject:
   - component: {fileID: 3980990372532533799}
   - component: {fileID: 8834368271905729762}
   - component: {fileID: 8033944285749300448}
+  - component: {fileID: 6917985765384010453}
   m_Layer: 0
   m_Name: WallGrid
   m_TagString: Walls
@@ -867,6 +868,18 @@ PolygonCollider2D:
       - {x: 2.9698286, y: 1.5304763}
       - {x: 2.9870172, y: 3.7484646}
   m_UseDelaunayMesh: 0
+--- !u!114 &6917985765384010453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4674011015138820816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8a9835a0647bd4f92ab99b5d8380ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4789878276060490322
 GameObject:
   m_ObjectHideFlags: 0
@@ -878,6 +891,7 @@ GameObject:
   - component: {fileID: 3004317366805364632}
   - component: {fileID: 5335860857164585604}
   - component: {fileID: 6323338849840558883}
+  - component: {fileID: 5162430097987504498}
   m_Layer: 0
   m_Name: WallGrid
   m_TagString: Walls
@@ -966,6 +980,18 @@ PolygonCollider2D:
       - {x: 2.510133, y: 1.1941135}
       - {x: 2.5385334, y: 3.4793744}
   m_UseDelaunayMesh: 0
+--- !u!114 &5162430097987504498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4789878276060490322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8a9835a0647bd4f92ab99b5d8380ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5008730048714058271
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,7 +1630,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b353282282793224a87f177b33237cb5, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

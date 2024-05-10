@@ -16,7 +16,6 @@ public static class Connection
         if (DbConnection.State == ConnectionState.Open)
         {
             //Debug.Log("DB open");
-            /*
             SqliteCommand cmd = new SqliteCommand();
             cmd.Connection = DbConnection;
             cmd.CommandText = "SELECT * FROM objects";
@@ -25,7 +24,6 @@ public static class Connection
             {
                 Debug.Log(String.Format("{0} {1}", reader[0], reader[1]));
             }
-            */
         }
         else
         {
@@ -125,7 +123,6 @@ public static class Connection
 		DbConnection.Open();
 		if (DbConnection.State == ConnectionState.Open)
 		{
-			//Debug.Log("DB open");
 			try
             {
 				SqliteCommand cmd = new SqliteCommand();
@@ -138,8 +135,6 @@ public static class Connection
                     if (obj == null) Debug.Log("null " + reader[2].ToString());
 
 					furnitures.Add(new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString())));
-					//Debug.Log(String.Format("{0} {1}", reader[0], reader[1]));
-                    
 				}
 				
 				DbConnection.Close();
@@ -169,6 +164,50 @@ public static class Connection
 	public static List<Furniture> GetDecore() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='decore')");
 	public static List<Furniture> GetWall() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='wall')");
 	public static List<Furniture> GetCarpet() => GetObjects("SELECT * FROM furniture WHERE type=(SELECT id FROM types WHERE type='carpet')");
+
+	public static List<CreatureScriptableObject> GetCreatures()
+	{
+		List<CreatureScriptableObject> creatures = new List<CreatureScriptableObject>();
+
+		DbConnection.Open();
+		if (DbConnection.State == ConnectionState.Open)
+		{
+			//Debug.Log("DB open");
+			try
+			{
+				SqliteCommand cmd = new SqliteCommand();
+				cmd.Connection = DbConnection;
+				cmd.CommandText = "SELECT * FROM creatures";
+				SqliteDataReader reader = cmd.ExecuteReader();
+				while (reader.Read())
+				{
+					CreatureScriptableObject obj = Resources.Load("Prefabs/Creatures/ScriptableObjects/" + reader[2].ToString()) as CreatureScriptableObject;
+					if (obj == null) Debug.Log("null " + reader[2].ToString());
+
+					creatures.Add(obj);
+					//Debug.Log(String.Format("{0} {1}", reader[0], reader[1]));
+
+				}
+
+				DbConnection.Close();
+				return creatures;
+			}
+			catch (Exception e)
+			{
+				Debug.LogException(e);
+
+				DbConnection.Close();
+				return null;
+			}
+
+		}
+		else
+		{
+			Debug.Log("Error connection");
+			DbConnection.Close();
+			return null;
+		}
+	}
 
 	public static void Save(string pref, float x, float y, int side)
 	{
@@ -201,7 +240,7 @@ public static class Connection
 		DbConnection.Close();
 	}
 
-	public static void ClearFurnitureTable()
+	public static void ClearSaveTable()
 	{
 		DbConnection.Open();
 		if (DbConnection.State == ConnectionState.Open)
@@ -331,41 +370,31 @@ public static class Connection
 			return 0;
 		}
 	}
-	/*
-	public static int GetTypeId(string type)
+
+	public static void ClearSave()
 	{
 		DbConnection.Open();
 		if (DbConnection.State == ConnectionState.Open)
 		{
+			//Debug.Log("DB open for save");
 			try
 			{
-				int typeId = 0;
 				SqliteCommand cmd = new SqliteCommand();
 				cmd.Connection = DbConnection;
-				cmd.CommandText = $"SELECT id FROM types WHERE type={type}";
-				SqliteDataReader reader = cmd.ExecuteReader();
-				while (reader.Read())
-				{
-					typeId = Int32.Parse(reader[0].ToString());
-				}
-				DbConnection.Close();
-				return typeId;
+
+				cmd.CommandText = $"DELETE FROM objects_save";
+				cmd.ExecuteNonQuery();
 			}
 			catch (Exception e)
 			{
 				Debug.LogException(e);
-				DbConnection.Close();
-				return 0;
 			}
 
 		}
 		else
 		{
 			Debug.Log("Error connection");
-			DbConnection.Close();
-			return 0;
 		}
-	}*/
-
-	//public static void DeleteFromSave(str)
+		DbConnection.Close();
+	}
 }

@@ -14,16 +14,24 @@ public class SavingSystem : MonoBehaviour
     public static int _saveObjectLastId;
     void Start()
     {
-        Load();
-    }
+		StartGameType gameType = MainMenu.gameType;
+		if (gameType == StartGameType.New)
+			EventBus.Instance.DeleteSave.Invoke();
+		else
+			EventBus.Instance.LoadSave.Invoke();
+	}
 
 	private void OnEnable()
 	{
 		EventBus.Instance.SaveAllObjects += SaveAll;
+		EventBus.Instance.LoadSave += Load;
+		EventBus.Instance.DeleteSave += LoadNewGame;
 	}
 	private void OnDisable()
 	{
 		EventBus.Instance.SaveAllObjects -= SaveAll;
+		EventBus.Instance.LoadSave -= Load;
+		EventBus.Instance.DeleteSave -= LoadNewGame;
 	}
 
 	/*
@@ -38,6 +46,11 @@ public class SavingSystem : MonoBehaviour
 			Connection.SaveFurniture(_saveObjectLastId, obj.name.Replace("(Clone)", ""), obj.transform.position.x, obj.transform.position.y);
 		}
 	}*/
+
+	public void LoadNewGame()
+	{
+		Connection.ClearSave();
+	}
 
 	public void Load()
     {
@@ -126,6 +139,7 @@ public class SavingSystem : MonoBehaviour
 					}
 					break;
 			}*/
+
 		}
 
         //_gridSystem.CreateInteriorGrid();
@@ -137,7 +151,7 @@ public class SavingSystem : MonoBehaviour
 
 		GameObject[] gameObjectsHouses = GameObject.FindGameObjectsWithTag("HasInterior");
 		GameObject[] gameObjects = GameObject.FindGameObjectsWithTag("Furniture");
-        Connection.ClearFurnitureTable();
+        Connection.ClearSaveTable();
 		foreach (GameObject obj in gameObjectsHouses)
 		{
 			Connection.Save(obj.name.Replace("(Clone)", ""), obj.transform.position.x, obj.transform.position.y, obj.GetComponent<Building>().Current_side);
