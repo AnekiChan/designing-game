@@ -10,6 +10,7 @@ public class UIManager : MonoBehaviour
 	[SerializeField] private GameObject StandartPanel;
     [SerializeField] private GameObject EditPanel;
 	[SerializeField] private GameObject EditInventory;
+	[SerializeField] private Animator transition;
 	private bool isEditing = false;
     public static Action<bool> onHousesDestroyMode;
     public static bool isHousesDestroyModeActive = false;
@@ -28,6 +29,7 @@ public class UIManager : MonoBehaviour
 		StandartPanel.SetActive(true);
 		EditPanel.SetActive(false);
 		GameMenu.SetActive(false);
+		transition.SetTrigger("Finish");
 	}
 
 	public void OpenMainMenu()

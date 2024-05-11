@@ -6,22 +6,30 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public static StartGameType gameType = StartGameType.Load;
+    [SerializeField] private Animator transition;
 
     public void StartNewGame()
-    {
-        gameType = StartGameType.New;
-        SceneManager.LoadScene("Gameplay");
+	{
+		gameType = StartGameType.New;
+		StartCoroutine(WaitBeforeStart());
     }
 
     public void LoadGame()
     {
-        gameType = StartGameType.Load;
-		SceneManager.LoadScene("Gameplay");
+		gameType = StartGameType.Load;
+		StartCoroutine(WaitBeforeStart());
 	}
 
     public void QuitGame()
     {
 		Application.Quit();
+	}
+
+    private IEnumerator WaitBeforeStart()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(3f);
+		SceneManager.LoadScene("Gameplay");
 	}
 }
 
