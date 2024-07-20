@@ -11,19 +11,6 @@ public class SmallButton : MonoBehaviour
 	{
 		animator = GetComponent<Animator>();
 	}
-	/*
-	private void OnEnable()
-	{
-		EventBus.Instance.EditMode += ChangeButtonState;
-	}
-	private void OnDisable()
-	{
-		EventBus.Instance.EditMode -= ChangeButtonState;
-	}
-	private void OnDestroy()
-	{
-		EventBus.Instance.EditMode -= ChangeButtonState;
-	}*/
 
 	public void ChangeButtonState()
     {
