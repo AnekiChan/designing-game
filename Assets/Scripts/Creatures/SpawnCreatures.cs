@@ -12,7 +12,7 @@ public class SpawnCreatures : MonoBehaviour
 
 	private void Start()
 	{
-		creaturesTypes = Connection.GetCreatures();
+		//creaturesTypes = Connection.GetCreatures();
 		StartCoroutine(LoadCreaturesOnStart());
 	}
 

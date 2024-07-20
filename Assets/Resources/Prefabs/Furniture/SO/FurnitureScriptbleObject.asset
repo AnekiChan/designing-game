@@ -10,15 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01edce2594a6e634daad7e5977286610, type: 3}
-  m_Name: CatDecore
+  m_Name: FurnitureScriptbleObject
   m_EditorClassIdentifier: 
-  _name: Cat
-  _uiIcon: {fileID: 21300000, guid: adcbb50dd095fe84e8aa1fcb2c84f895, type: 3}
-  prefab: {fileID: 7851751028012086751, guid: 9e5376e5004c71142a74befdc139a74b, type: 3}
-  rank: 1
-  cost: 1
-  isSitting: 0
-  iSOccupied: 0
-  cute: 0
-  modern: 0
-  classic: 0
+  _name: 
+  _uiIcon: {fileID: 0}
+  _furnitureTypes: 01000000
+  _themes: 
+  _methodsToObtaining: 
+  _furnitureColors: 

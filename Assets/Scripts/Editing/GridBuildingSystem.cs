@@ -281,7 +281,7 @@ public class GridBuildingSystem : MonoBehaviour
         GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
         obj.layer = gameObject.layer;
         temp = obj.GetComponent<Building>();
-		EventBus.Instance.ChangeScore?.Invoke(Connection.GetObjectByPrefab(building.name).Score);
+		//EventBus.Instance.ChangeScore?.Invoke(Connection.GetObjectByPrefab(building.name).Score);
 
 		isMoving = true;
         FollowBuilding();

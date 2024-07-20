@@ -50,7 +50,7 @@ public static class Connection
 					GameObject obj = Resources.Load("Prefabs/Furniture/" + reader[2].ToString()) as GameObject;
 					if (obj == null) Debug.Log("null " + reader[2].ToString());
 
-					furniture = new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString()));
+					//furniture = new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString()));
 					//Debug.Log(String.Format("{0} {1}", reader[0], reader[1]));
 
 				}
@@ -92,7 +92,7 @@ public static class Connection
 					GameObject obj = Resources.Load("Prefabs/Furniture/" + reader[2].ToString()) as GameObject;
 					if (obj == null) Debug.Log("null " + reader[2].ToString());
 
-					furniture = new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString()));
+					//furniture = new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString()));
 					//Debug.Log(String.Format("{0} {1}", reader[0], reader[1]));
 
 				}
@@ -134,7 +134,7 @@ public static class Connection
                     GameObject obj = Resources.Load("Prefabs/Furniture/" + reader[2].ToString()) as GameObject;
                     if (obj == null) Debug.Log("null " + reader[2].ToString());
 
-					furnitures.Add(new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString())));
+					//furnitures.Add(new Furniture(Int32.Parse(reader[0].ToString()), reader[1].ToString(), obj, Int32.Parse(reader[3].ToString()), Int32.Parse(reader[4].ToString())));
 				}
 				
 				DbConnection.Close();
@@ -264,7 +264,7 @@ public static class Connection
 		}
 		DbConnection.Close();
 	}
-
+	/*
 	public static List<SaveObj> GetSaveObjects()
 	{
 		DbConnection.Open();
@@ -300,7 +300,7 @@ public static class Connection
 			return null;
 		}
 	}
-
+	*/
 	public static string GetPrefab(int id)
 	{
 		DbConnection.Open();

@@ -63,7 +63,7 @@ public class GridSystem : MonoBehaviour
 			}
 		}
 	}
-
+	/*
 	public GridBuildingSystem GetObjectGrid(Furniture furniture)
 	{
 		if (exteriorIds.Contains(furniture.Type)) return ExteriorGrid.GetComponent<GridBuildingSystem>();
@@ -79,7 +79,7 @@ public class GridSystem : MonoBehaviour
 		else if (wallIds.Contains(furniture.Type)) return ParentType.Walls;
 		else return ParentType.Decore;
 	}
-
+	*/
 	public int GetFurnitureLayer(int typeId)
 	{
 		if (exteriorIds.Contains(typeId)) return ExteriorGrid.layer;

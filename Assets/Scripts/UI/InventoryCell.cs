@@ -12,8 +12,8 @@ public class InventoryCell : MonoBehaviour
     
     public void Render(Furniture furniture, GridBuildingSystem grid)
     {
-		_furniturePref = furniture.Prefab;
-		_iconField.sprite = furniture.Prefab.GetComponent<Building>().Icon;
+		//_furniturePref = furniture.Prefab;
+		//_iconField.sprite = furniture.Prefab.GetComponent<Building>().Icon;
         
         _buildingSystem = grid;
     }
