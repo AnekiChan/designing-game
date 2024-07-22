@@ -20,13 +20,13 @@ public class Building : MonoBehaviour
     public bool isSitting = false;
     public Transform SeatPos;
 
-    private AudioSource _audioSource;
+    //private AudioSource _audioSource;
 
     //public static Action onPlaced;
 
 	private void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
+        //_audioSource = GetComponent<AudioSource>();
 
         if (SeatPos == null) SeatPos = transform;
 
@@ -95,7 +95,7 @@ public class Building : MonoBehaviour
     public void Place(GridBuildingSystem grid)
     {
         //onPlaced.Invoke();
-        _audioSource?.Play();
+        //_audioSource?.Play();
         Vector3Int positionInt = grid.current.gridLayout.LocalToCell(transform.position);
         BoundsInt areaTemp = area;
         areaTemp.position = positionInt;

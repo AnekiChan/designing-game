@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: d_outline1
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: a4c364e45dcbf2c42a580ec763f71277, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.17254902}
   m_Transform:
     e00: 1
     e01: 0

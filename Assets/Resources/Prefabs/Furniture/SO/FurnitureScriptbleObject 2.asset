@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01edce2594a6e634daad7e5977286610, type: 3}
-  m_Name: FurnitureScriptbleObject
+  m_Name: FurnitureScriptbleObject 2
   m_EditorClassIdentifier: 
-  _name: 1
-  _uiIcon: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
-  _prefab: {fileID: 8398926749963229753, guid: 1b1942c864d5f314c96057255de36418, type: 3}
-  _furnitureType: 2
+  _name: 2
+  _uiIcon: {fileID: 2025661873, guid: 32e97313ef0b9af4ab66b0e82a8ad817, type: 3}
+  _prefab: {fileID: 3344940112803773403, guid: b07feee90f77e9b4b9a224881a5b1c0e, type: 3}
+  _furnitureType: 4
   _roomTypes: 00000000
   _themes: 00000000
   _methodsToObtaining: 00000000

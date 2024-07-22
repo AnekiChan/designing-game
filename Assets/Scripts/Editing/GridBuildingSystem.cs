@@ -5,10 +5,11 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 using System;
+using FurnitureTypesList;
 
 public class GridBuildingSystem : MonoBehaviour
 {
-	[SerializeField] private Inventory EditPanel;
+	//[SerializeField] private Inventory EditPanel;
 
     public GridBuildingSystem current;
 
@@ -31,25 +32,23 @@ public class GridBuildingSystem : MonoBehaviour
 
     public bool isMoving = false;
 
-    public static Action onDestroyHouse;
-
 	#region Unity Methods
 
 	private void Awake()
     {
         current = this;
-	}
-
-    private void Start()
-    {
         _parent = transform.parent;
-
         tileBases.Add(TileType.Empty, null);
         tileBases.Add(TileType.White, whiteTile);
         tileBases.Add(TileType.Green, greenTile);
         tileBases.Add(TileType.Red, redTile);
 
-		ActiveTemptilemap(false);
+        ActiveMaintilemap(false);
+    }
+
+    private void Start()
+    {
+        
     }
 
     private void Update()
@@ -62,7 +61,7 @@ public class GridBuildingSystem : MonoBehaviour
                 if (!isMoving)
                 {
                     isMoving = true;
-                    ActiveTemptilemap(false);
+                    ActiveMaintilemap(true);
 				}
                 else
                 {
@@ -71,8 +70,8 @@ public class GridBuildingSystem : MonoBehaviour
                         isMoving = false;
                         temp.Place(current);
                         temp = null;
-                        EditPanel.HideInvantory(false);
-						ActiveTemptilemap(false);
+                        //EditPanel.HideInvantory(false);
+						ActiveMaintilemap(false);
 					}
                 }
             }
@@ -109,13 +108,6 @@ public class GridBuildingSystem : MonoBehaviour
             }
 
         }
-
-        // удаление дома
-		if (UIManager.isHousesDestroyModeActive && !isMoving && Input.GetMouseButtonDown(0))
-        {
-            StartCoroutine(DestroyHouse());
-		}
-
 	}
 
     private void MoveObject()
@@ -131,30 +123,10 @@ public class GridBuildingSystem : MonoBehaviour
 				//Debug.Log("CLICKED " + hit.collider.name);
 				ClearPrev(hit.collider.gameObject.GetComponent<Building>());
 				temp = hit.collider.gameObject.GetComponent<Building>();
-				EditPanel.HideInvantory(true);
+				//EditPanel.HideInvantory(true);
 				isMoving = true;
 				FollowBuilding();
-				ActiveTemptilemap(true);
-			}
-		}
-	}
-
-	private IEnumerator DestroyHouse()
-	{
-		Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-		RaycastHit2D[] hits = Physics2D.RaycastAll(ray.origin, ray.direction, 2);
-		foreach (var hit in hits)
-		{
-			if (hit.collider != null && !EventSystem.current.IsPointerOverGameObject() && hit.collider.tag == "HasInterior")
-			{
-				Debug.Log("Destroy " + hit.collider.name);
-				
-                ClearPrev(hit.collider.gameObject.GetComponent<Building>());
-				onDestroyHouse.Invoke();
-				Destroy(hit.collider.transform.gameObject);
-                yield return new WaitForEndOfFrame();
-                onDestroyHouse.Invoke();
-				break;
+				ActiveMaintilemap(true);
 			}
 		}
 	}
@@ -166,7 +138,7 @@ public class GridBuildingSystem : MonoBehaviour
 		Destroy(temp.gameObject);
 		isMoving = false;
 		temp = null;
-		EditPanel.HideInvantory(false);
+		//EditPanel.HideInvantory(false);
 	}
 
     private void RotateObject()
@@ -177,18 +149,17 @@ public class GridBuildingSystem : MonoBehaviour
 		FollowBuilding();
 	}
 
-	private void ActiveTemptilemap(bool b)
+	private void ActiveMaintilemap(bool b)
     {
-        /*
 		//MainTilemap.gameObject.SetActive(b);
         if (b)
         {
-            TempTilemap.gameObject.SetActive(true);
+            MainTilemap.gameObject.SetActive(true);
         }
         else
         {
-			TempTilemap.gameObject.SetActive(false);
-		}*/
+            MainTilemap.gameObject.SetActive(false);
+		}
 	}
 
     #endregion
@@ -276,16 +247,20 @@ public class GridBuildingSystem : MonoBehaviour
 
     #region Building Placement
 
-    public void InitializeWithBuilding(GameObject building)
+    public void InitializeWithBuilding(FurnitureSO building)
     {
-        GameObject obj = Instantiate(building, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
-        obj.layer = gameObject.layer;
-        temp = obj.GetComponent<Building>();
-		//EventBus.Instance.ChangeScore?.Invoke(Connection.GetObjectByPrefab(building.name).Score);
+        if (building.FurnitureType != FurnitureType.Floor && building.FurnitureType != FurnitureType.Wall)
+        {
+            GameObject obj = Instantiate(building.Prefab, Camera.main.ScreenToWorldPoint(Input.mousePosition), Quaternion.identity, _parent);
+            obj.layer = gameObject.layer;
+            temp = obj.GetComponent<Building>();
+            //EventBus.Instance.ChangeScore?.Invoke(Connection.GetObjectByPrefab(building.name).Score);
 
-		isMoving = true;
-        FollowBuilding();
-        EditPanel.HideInvantory(true);
+            ActiveMaintilemap(true);
+            isMoving = true;
+            FollowBuilding();
+            //EditPanel.HideInvantory(true);
+        }
     }
 
     /*
@@ -320,7 +295,7 @@ public class GridBuildingSystem : MonoBehaviour
 	private void FollowBuilding()
     {
         ClearTempArea();
-
+        
         temp.area.position = gridLayout.WorldToCell(temp.gameObject.transform.position);
         BoundsInt buildingArea = temp.area;
 

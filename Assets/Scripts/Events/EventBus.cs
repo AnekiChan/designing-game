@@ -21,7 +21,11 @@ public class EventBus
 
 	#region UI
 	public Action<bool> EditMode;
-	public Action<int> ChangePlayerSortingLayer;
+	public Action<FurnitureSO> ChangeGrid;
+    public Action<FurnitureSO> ChangeFloor;
+    public Action<FurnitureSO> ChangeWall;
+	//public Action<FurnitureSO> StartBuilding;
+    public Action<int> ChangePlayerSortingLayer;
 	public Action SetStandartLayer;
 	#endregion
 

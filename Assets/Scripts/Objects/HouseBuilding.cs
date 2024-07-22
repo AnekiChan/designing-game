@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class HouseBuilding : MonoBehaviour
 {
+	/*
 	private List<GameObject> furniture = new List<GameObject>();
 	private bool isHousesDestroyModeActive = false;
 	[SerializeField] private List<SpriteRenderer> renderers;
@@ -94,4 +95,5 @@ public class HouseBuilding : MonoBehaviour
 				r.material = outline;
 		}
 	}
+	*/
 }

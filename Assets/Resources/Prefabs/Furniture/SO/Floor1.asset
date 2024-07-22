@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01edce2594a6e634daad7e5977286610, type: 3}
-  m_Name: FurnitureScriptbleObject
+  m_Name: Floor1
   m_EditorClassIdentifier: 
-  _name: 1
-  _uiIcon: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
-  _prefab: {fileID: 8398926749963229753, guid: 1b1942c864d5f314c96057255de36418, type: 3}
-  _furnitureType: 2
+  _name: floor1
+  _uiIcon: {fileID: 21300000, guid: 995f16267cd80024eb1b115908a37138, type: 3}
+  _prefab: {fileID: 8398926749963229753, guid: edce6f9400df4714ab9c1ca1e1b00479, type: 3}
+  _furnitureType: 0
   _roomTypes: 00000000
   _themes: 00000000
   _methodsToObtaining: 00000000

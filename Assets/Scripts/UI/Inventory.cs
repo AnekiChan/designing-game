@@ -41,19 +41,20 @@ public class Inventory : MonoBehaviour
 		ClearLists();
         foreach (GameObject panel in _panels) panel.SetActive(false);
         foreach (GameObject button in _buttons) button.GetComponent<Button>().onClick.RemoveAllListeners();
-		FillFurnitureLists();
-        OpenPanels();
 	}
 
 	public void OnEnable()
     {
-		//onEdited?.Invoke(true);
+        //onEdited?.Invoke(true);
         //Render(Connection.GetHouses());
-	}
+        TaskSystem.onStartedTask += FillFurnitureLists;
+
+    }
 	private void OnDisable()
 	{
-		//onEdited?.Invoke(false);
-	}
+        //onEdited?.Invoke(false);
+        TaskSystem.onStartedTask -= FillFurnitureLists;
+    }
 
 	public void Render(List<FurnitureSO> furnitures)
     {
@@ -65,7 +66,7 @@ public class Inventory : MonoBehaviour
 		foreach (FurnitureSO furniture in furnitures)
         {
 			var cell = Instantiate(_inventoryCellTemplate, _container);
-			//cell.Render(furniture, gridSystem.GetObjectGrid(furniture));
+			cell.Render(furniture, gridSystem);
 		}
     }
 
@@ -81,9 +82,9 @@ public class Inventory : MonoBehaviour
 		_carpets.Clear();
 	}
 
-	private void FillFurnitureLists()
+	private void FillFurnitureLists(TaskSO currentTask)
 	{
-		foreach (FurnitureSO furniture in TaskSystem.GetFurnitureToTask())
+		foreach (FurnitureSO furniture in GetFurnitureToTask(currentTask))
 		{
 			switch (furniture.FurnitureType)
 			{
@@ -113,109 +114,111 @@ public class Inventory : MonoBehaviour
 					break;
 			}
 		}
+
+        OpenPanels();
 	}
 
 	private void OpenPanels()
 	{
-		List<Sprite> icons = new List<Sprite>();
 		int currentIndex = 0;
 		if (_floor.Count > 0)
 		{
-			_panels[currentIndex].SetActive(true);
-			_buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderFloor);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _floorIcon;
+            //_buttons[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderFloor);
 			currentIndex++;
 		}
 		if (_wall.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _wallIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderWall);
             currentIndex++;
         }
         if (_bigFurniture.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _bigFurnitureIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderBigFurniture);
             currentIndex++;
         }
         if (_smallFurniture.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _smallFurnitureIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderSmallFurniture);
             currentIndex++;
         }
         if (_decore.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _decoreIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderDecor);
             currentIndex++;
         }
         if (_plants.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _plantsIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderPlants);
             currentIndex++;
         }
         if (_carpets.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _carpetsIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderCarpets);
             currentIndex++;
         }
         if (_wallDecore.Count > 0)
         {
-            _panels[currentIndex].SetActive(true);
+            _buttons[currentIndex].GetComponent<Image>().sprite = _wallDecoreIcon;
             _buttons[currentIndex].GetComponent<Button>().onClick.AddListener(RenderWallDecor);
             currentIndex++;
         }
 
+        for (int i = 0; i < currentIndex; i++)
+        {
+            _panels[i].SetActive(true);
+            _buttons[i].SetActive(true);
+            _buttons[i].GetComponent<Image>().SetNativeSize();
+        }
+
+        _buttons[0].GetComponent<Button>().onClick.Invoke();
 	}
 
 	public void RenderFloor()
 	{
 		Render(_floor);
-		_currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
 	}
 
     public void RenderWall()
     {
         Render(_wall);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void RenderBigFurniture()
     {
         Render(_bigFurniture);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void RenderSmallFurniture()
     {
         Render(_smallFurniture);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void RenderDecor()
     {
         Render(_decore);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void RenderPlants()
     {
         Render(_plants);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void RenderCarpets()
     {
         Render(_carpets);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void RenderWallDecor()
     {
         Render(_wallDecore);
-        _currentPanel.GetComponent<Image>().sprite = gameObject.transform.parent.GetComponent<Image>().sprite;
     }
 
     public void HideInvantory(bool b)
@@ -231,5 +234,27 @@ public class Inventory : MonoBehaviour
 			canvasGroup.alpha = 1f;
 			canvasGroup.interactable = true;
 		}
+    }
+
+    public List<FurnitureSO> GetFurnitureToTask(TaskSO currentTask)
+    {
+        if (currentTask != null)
+        {
+            if (currentTask.RoomType == RoomType.None && currentTask.Theme == Theme.None && currentTask.Colors == FurnitureColor.None)
+                return FurnitureSystem.AllFurniture.FindAll(p => p.IsObtained);
+
+            List<FurnitureSO> furnitureForTask = new List<FurnitureSO>();
+            furnitureForTask.AddRange(FurnitureSystem.AllFurniture.FindAll(
+                p => p.RoomTypes.Contains(currentTask.RoomType) && p.Theme.Contains(currentTask.Theme) && p.FurnitureColors.Contains(currentTask.Colors)));
+            furnitureForTask.AddRange(FurnitureSystem.AllFurniture.FindAll(
+                p => p.RoomTypes.Contains(currentTask.RoomType) && p.IsObtained));
+            return furnitureForTask;
+        }
+        else throw new ArgumentNullException("No task");
+    }
+
+    public void ChangePanelSprite(int index)
+    {
+        _currentPanel.GetComponent<Image>().sprite = _panels[index].GetComponent<Image>().sprite;
     }
 }
