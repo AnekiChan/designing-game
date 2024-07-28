@@ -6,7 +6,6 @@ using System;
 
 public class StaticChangableObjects : MonoBehaviour
 {
-
     [SerializeField] private GameObject _floor;
     [SerializeField] private GameObject _wall;
 

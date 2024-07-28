@@ -129,6 +129,7 @@ GameObject:
   - component: {fileID: 8650456018118680242}
   - component: {fileID: 6623448962541847022}
   - component: {fileID: 376369808117902487}
+  - component: {fileID: 34498556705410440}
   m_Layer: 0
   m_Name: Chair2Pref
   m_TagString: Furniture
@@ -311,6 +312,19 @@ PolygonCollider2D:
       - {x: 0.009077847, y: -0.20503831}
       - {x: 0.33696944, y: -0.02203393}
   m_UseDelaunayMesh: 0
+--- !u!114 &34498556705410440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5495437257041452111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b577bab73bf26e47a33b5e50d9ac336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _furnitureSO: {fileID: 11400000, guid: ad46b05b3a2391e4fbc94d3905c19da2, type: 2}
 --- !u!1 &6214737753424250180
 GameObject:
   m_ObjectHideFlags: 0

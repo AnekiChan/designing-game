@@ -7,6 +7,8 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "FurnitureScriptbleObject", menuName = "SO/Furniture")]
 public class FurnitureSO : ScriptableObject, IFurniture
 {
+    [SerializeField, HideInInspector]
+    private string _id;
     [SerializeField] private string _name;
     [SerializeField] private Sprite _uiIcon;
     [SerializeField] private GameObject _prefab;
@@ -18,6 +20,7 @@ public class FurnitureSO : ScriptableObject, IFurniture
     [SerializeField] private List<FurnitureColor> _furnitureColors = new List<FurnitureColor>();
     [SerializeField] private bool _isOntained;
 
+    public string Id => _id;
     public string Name => _name;
     public Sprite UIIcon => _uiIcon;
     public GameObject Prefab => _prefab;
@@ -27,4 +30,13 @@ public class FurnitureSO : ScriptableObject, IFurniture
     public List<MethodToOntaining> MethodsToObtaining => _methodsToObtaining;
     public List<FurnitureColor> FurnitureColors => _furnitureColors;
     public bool IsObtained => _isOntained;
+    private void OnValidate()
+    {
+        // Принудительно устанавливаем значение по умолчанию, если его еще не задали
+        if (_id == "")
+        {
+            _id = "F" + Guid.NewGuid().ToString("N");// или любое другое значение по умолчанию
+        }
+    }
+
 }

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5859795984467535531}
   - component: {fileID: 134614486849710678}
   - component: {fileID: 351961157181421372}
-  - component: {fileID: -2287607680356715334}
+  - component: {fileID: -8534154098784718608}
   m_Layer: 0
   m_Name: Floor2
   m_TagString: Furniture
@@ -98,7 +98,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &-2287607680356715334
+--- !u!114 &-8534154098784718608
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -107,8 +107,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8398926749963229753}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf4cf92eea8b8744da5ed6ec276b42d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 0b577bab73bf26e47a33b5e50d9ac336, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _floor: {fileID: 0}
-  _wall: {fileID: 0}
+  _furnitureSO: {fileID: 11400000, guid: 2488a9889721c054281fde0e69e7b54a, type: 2}

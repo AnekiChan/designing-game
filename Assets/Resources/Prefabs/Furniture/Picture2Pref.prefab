@@ -128,6 +128,7 @@ GameObject:
   - component: {fileID: 5842282885392197989}
   - component: {fileID: 4550549422059023981}
   - component: {fileID: 3693659556540339838}
+  - component: {fileID: -1425481986299369435}
   m_Layer: 0
   m_Name: Picture2Pref
   m_TagString: Furniture
@@ -292,6 +293,19 @@ SortingGroup:
   m_SortingLayer: 2
   m_SortingOrder: 3
   m_SortAtRoot: 0
+--- !u!114 &-1425481986299369435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5495437257041452111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b577bab73bf26e47a33b5e50d9ac336, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _furnitureSO: {fileID: 0}
 --- !u!1 &6214737753424250180
 GameObject:
   m_ObjectHideFlags: 0

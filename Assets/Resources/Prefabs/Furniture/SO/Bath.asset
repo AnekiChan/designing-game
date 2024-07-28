@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 01edce2594a6e634daad7e5977286610, type: 3}
-  m_Name: FurnitureScriptbleObject
+  m_Name: Bath
   m_EditorClassIdentifier: 
-  _name: 1
+  _id: fcd47984d5db4623872fe57391fbcbe0
+  _name: bath
   _uiIcon: {fileID: -611436735, guid: fd85e604a29995c4583380c1d31d72ff, type: 3}
   _prefab: {fileID: 8398926749963229753, guid: 1b1942c864d5f314c96057255de36418, type: 3}
   _furnitureType: 2
