@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FurnitureTypesList;
 
 public class FurnitureSystem: MonoBehaviour, IDataPersistance
 {
@@ -43,11 +44,35 @@ public class FurnitureSystem: MonoBehaviour, IDataPersistance
         Wall = wall;
     }
 
+    // загрузка комнаты из сохранения
     public void LoadData(GameData data)
     {
-        //throw new System.NotImplementedException();
+        EventBus.Instance.ChangeFloor(_allFurniture.Find(p => p.Id == data.RoomDataList[0].FloorId));
+        EventBus.Instance.ChangeWall(_allFurniture.Find(p => p.Id == data.RoomDataList[0].WallId));
+
+        foreach (KeyValuePair<string, FurniturePosition> furniture in data.RoomDataList[0].RoomFurnitureList)
+        {
+            FurnitureSO furnitureSO = _allFurniture.Find(p => p.Id == furniture.Key);
+            GameObject obj;
+            if (furnitureSO.FurnitureType == FurnitureType.Decor)
+            {
+                obj = Instantiate(furnitureSO.Prefab, new Vector2(furniture.Value._XPos, furniture.Value._YPos), Quaternion.identity, Interior.transform);
+            }
+            else if (furnitureSO.FurnitureType == FurnitureType.WallDecor)
+            {
+                obj = Instantiate(furnitureSO.Prefab, new Vector2(furniture.Value._XPos, furniture.Value._YPos), Quaternion.identity, WallDecore.transform);
+            }
+            else
+            {
+                obj = Instantiate(furnitureSO.Prefab, new Vector2(furniture.Value._XPos, furniture.Value._YPos), Quaternion.identity, Interior.transform);
+            }
+            
+            obj.layer = obj.transform.parent.gameObject.layer;
+            obj.GetComponent<Building>().TurnSide(furniture.Value.Rotation);
+        }
     }
 
+    // сохранение комнаты
     public void SaveData(ref GameData data)
     {
         RoomData roomData = new RoomData();
@@ -60,8 +85,8 @@ public class FurnitureSystem: MonoBehaviour, IDataPersistance
                 roomData.RoomFurnitureList.Add(obj.GetComponent<Furniture>().FurnitureSO.Id, new FurniturePosition(building.area.x, building.area.y, building.Current_side));
             }
         }
-        roomData.FloorName = Floor.Name;
-        roomData.WallsName = Wall.Name;
+        roomData.FloorId = Floor.Name;
+        roomData.WallId = Wall.Name;
 
         data.RoomDataList.Add(roomData);
     }
